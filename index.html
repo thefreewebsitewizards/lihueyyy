@@ -1,0 +1,3138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Li Huey | Digital Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=The+Seasons:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/monest');
+        @import url('https://fonts.googleapis.com/css2?family=The+Seasons:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Domine', serif; 
+            scroll-behavior: smooth;
+        }
+        
+        h1, h2, h3, h4, .font-monest {
+            font-family: 'Monest', sans-serif;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-in:not(.visible) {
+            will-change: auto;
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .hover-scale {
+            transition: transform 0.2s ease;
+            will-change: transform;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+        
+        .hover-scale:not(:hover) {
+            will-change: auto;
+        }
+        
+        .magazine-border {
+            position: relative;
+        }
+        
+        .scrollbar-hidden {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #4a4a4a #f3f4f6;
+        }
+        .scrollbar-hidden::-webkit-scrollbar {
+            height: 8px;
+            width: 0px;
+        }
+        .scrollbar-hidden::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+        .scrollbar-hidden::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 4px;
+        }
+        .scrollbar-hidden::-webkit-scrollbar-thumb:hover {
+            background: #808080;
+        }
+        
+        .magazine-border::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+        }
+        
+        .btn-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            will-change: transform;
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-hover:not(:hover) {
+            will-change: auto;
+        }
+        
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #f472b6;
+            transition: width 0.3s ease;
+            will-change: width;
+            border-radius: 1px;
+        }
+        
+        .nav-link:hover {
+            color: #f472b6;
+            transform: translateY(-1px);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        /* Portfolio video hover optimizations */
+        .portfolio-item .group {
+            will-change: transform;
+        }
+        
+        .portfolio-item .group:hover {
+            will-change: auto;
+        }
+        
+        .portfolio-item video {
+            transform: translateZ(0); /* Force hardware acceleration */
+        }
+        
+        /* First batch videos - immediate visibility */
+        [data-batch="1"] video {
+            opacity: 1;
+            background-color: #f3f4f6; /* Light gray background while loading */
+            min-height: 192px; /* Ensure consistent height */
+        }
+        
+        /* Loading state for videos */
+        .portfolio-item video[data-loading="true"] {
+            background-image: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), 
+                              linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #f3f4f6 75%), 
+                              linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        
+        /* Optimize backdrop blur for better performance */
+        .bg-opacity-20.backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        
+        @media (max-width: 768px) {
+            .parallax {
+                background-attachment: scroll;
+            }
+            
+            /* Disable expensive effects on mobile */
+            .hover-scale:hover {
+                transform: none;
+            }
+            
+            .btn-hover:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+
+        @keyframes cameraZoom {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.camera-zoom {
+  animation: cameraZoom 1s ease-out forwards;
+}
+
+/* Custom Animations for Fashion Background */
+@keyframes blob {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+        transform: translate(0px, 0px) scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.animate-blob {
+    animation: blob 7s infinite;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+.animation-delay-1000 {
+    animation-delay: 1s;
+}
+
+.animation-delay-3000 {
+    animation-delay: 3s;
+}
+
+.walk-animation {
+    animation: walk 3s ease-in-out infinite;
+}
+
+@keyframes walk {
+    0%, 100% {
+        transform: translateX(0) scale(1);
+    }
+    25% {
+        transform: translateX(-8px) scale(1.05);
+    }
+    50% {
+        transform: translateX(0) scale(1.1);
+    }
+    75% {
+        transform: translateX(8px) scale(1.05);
+    }
+}
+
+@keyframes continuousDropInOut {
+    0% {
+        transform: translateY(-100px) scale(0.8);
+        opacity: 0;
+    }
+    15% {
+        transform: translateY(10px) scale(1.1);
+        opacity: 0.9;
+    }
+    25% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    85% {
+        transform: translateY(-10px) scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100px) scale(0.8);
+        opacity: 0;
+    }
+}
+
+.continuous-drop {
+    animation: continuousDropInOut 4s ease-in-out infinite;
+}
+
+.drop-delay-1 {
+    animation-delay: 0.5s;
+}
+
+.drop-delay-2 {
+    animation-delay: 1s;
+}
+/* Video Gallery Styles - Updated to match website theme */
+.video-gallery-container {
+  display: flex;
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #FDF2F8;
+  font-family: 'Josefin Sans', sans-serif;
+  border-radius: 10px;
+}
+
+/* Main Video Section */
+.main-video-section {
+  flex: 2;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: 2px solid #fce7f3;
+  transition: all 0.3s ease;
+}
+
+.main-video-section:hover {
+  border-color: #f9a8d4;
+  box-shadow: 0 10px 25px rgba(236,72,153,0.15);
+}
+
+.video-thumbnail-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.main-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.main-thumbnail:hover {
+  transform: scale(1.02);
+}
+
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.video-thumbnail-container:hover .play-overlay {
+  opacity: 1;
+}
+
+.play-button {
+  width: 68px;
+  height: 48px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ec4899;
+  transition: all 0.3s ease;
+  border: 2px solid #ec4899;
+}
+
+.play-button:hover {
+  background: #ec4899;
+  color: white;
+  transform: scale(1.1);
+}
+
+.video-info {
+  padding: 20px;
+}
+
+.channel-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.channel-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fce7f3;
+}
+
+.channel-name {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 14px;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.video-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #111827;
+  margin: 0;
+  transition: color 0.3s ease;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Sidebar Thumbnails */
+.sidebar-thumbnails {
+  flex: 1;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ec4899 #f1f5f9;
+  border: 2px solid #e5e7eb;
+}
+
+.sidebar-thumbnails::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-thumbnails::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.sidebar-thumbnails::-webkit-scrollbar-thumb {
+  background: #ec4899;
+  border-radius: 3px;
+}
+
+.sidebar-thumbnails::-webkit-scrollbar-thumb:hover {
+  background: #db2777;
+}
+
+.thumbnail-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+  border: 2px solid transparent;
+  background: white;
+}
+
+.thumbnail-item:hover {
+  background: #fdf2f8;
+  border-color: #f9a8d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(236,72,153,0.15);
+}
+
+.thumbnail-item.active {
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+  border-color: #ec4899;
+  box-shadow: 0 4px 12px rgba(236,72,153,0.2);
+}
+
+.thumbnail-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  aspect-ratio: 16/9;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.thumbnail-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-item:hover .thumbnail-wrapper img {
+  transform: scale(1.05);
+}
+
+.duration {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.thumbnail-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.thumbnail-info h4 {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 6px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.3s ease;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.thumbnail-item:hover .thumbnail-info h4 {
+  color: #ec4899;
+}
+
+.thumbnail-item.active .thumbnail-info h4 {
+  color: #be185d;
+  font-weight: 600;
+}
+
+.channel-meta {
+  color: #9ca3af;
+  font-size: 11px;
+  margin: 0;
+  line-height: 1.2;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .video-gallery-container {
+    flex-direction: column;
+    padding: 12px;
+    gap: 16px;
+  }
+  
+  .main-video-section {
+    order: 1;
+  }
+  
+  .sidebar-thumbnails {
+    order: 2;
+    max-height: 400px;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+    padding: 12px;
+  }
+  
+  .thumbnail-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 12px;
+    border: 1px solid #f3e8ff;
+  }
+  
+  .thumbnail-item:hover {
+    background: #fdf2f8;
+    border-color: #ec4899;
+  }
+  
+  .thumbnail-item.active {
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+    border-color: #ec4899;
+  }
+  
+  .thumbnail-wrapper {
+    width: 100px;
+  }
+  
+  .video-title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-gallery-container {
+    padding: 8px;
+  }
+  
+  .video-info {
+    padding: 16px;
+  }
+  
+  .thumbnail-wrapper {
+    width: 80px;
+  }
+  
+  .thumbnail-info h4 {
+    font-size: 12px;
+  }
+  
+  .video-title {
+    font-size: 16px;
+  }
+}
+
+/* Smooth animations */
+* {
+  box-sizing: border-box;
+}
+
+.video-gallery-container * {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Add this to your existing <style> section */
+    .floating-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-player {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.gallery-thumbnail {
+    transition: all 0.3s ease;
+}
+
+.gallery-thumbnail:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+}
+
+.gallery-thumbnail.active {
+    border-color: #ec4899 !important;
+    opacity: 1 !important;
+}
+
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-700">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-stone-50 bg-opacity-95 z-50 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 py-2">
+            <div class="flex justify-center items-center gap-8 md:gap-60">
+                <a href="#" class="flex items-center group">
+                    <span class="text-3xl font-bold text-pink-400" style="font-family: 'The Seasons', serif; letter-spacing: 2px;">Li Huey</span>
+                </a>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden absolute right-6">
+                    <button id="menu-btn" class="text-gray-800 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden text-black md:flex space-x-6" style="font-family: 'Josefin Sans', sans-serif;">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                    <a href="#brand-shoot" class="nav-link">Brand Shoot</a>
+                    <a href="#socials" class="nav-link">Socials</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- Mobile Side Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <!-- Background overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="toggleMobileMenu()"></div>
+        
+        <!-- Side menu -->
+        <div class="relative w-64 h-full bg-stone-50 shadow-xl" style="font-family: 'Josefin Sans', sans-serif;">
+            <!-- Close button -->
+            <div class="flex justify-end p-4">
+                <button onclick="toggleMobileMenu()" class="text-gray-800 focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Menu items -->
+            <div class="px-4 py-0">
+                <a href="#home" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">Home</a>
+                <a href="#about" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">About</a>
+                <a href="#portfolio" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">Portfolio</a>
+                <a href="#brand-shoot" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">Brand Shoot</a>
+                <a href="#socials" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">Socials</a>
+                <a href="#contact" class="block py-3 px-4 mb-2 hover:bg-gray-800 hover:text-white rounded-full transition-all duration-300" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+        </div>
+     </div>
+
+    <!-- Hero Section -->
+    <!-- Mobile layout without background -->
+    <section id="home" class="lg:hidden min-h-screen bg-slideshow bg-cover bg-[right_44%_center] bg-no-repeat flex flex-col justify-between py-8 sm:py-12 md:py-20 px-4 sm:px-6 md:px-8 relative">
+        <!-- Semi-transparent overlay for text readability -->
+        <div class="absolute inset-0 bg-white bg-opacity-95" style="z-index: 2;"></div>
+        
+        <div class="flex-1 flex items-center justify-center">
+            <div class="text-center w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto px-2 sm:px-4 relative z-10">
+                <h1 class="text-5xl xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black mb-4 sm:mb-6 md:mb-8 text-black leading-tight" style="font-family: 'The Seasons', serif;">
+                   <span class="text-2xl sm:text-3xl md:text-4xl font-normal text-pink-400" style="font-family: 'Josefin Sans', sans-serif;">Li Huey | Digital Creator</span>
+                    <span id="looping-words-mobile"></span><br>
+                </h1>
+                <p class="text-lg sm:text-xl md:text-2xl text-stone-700 leading-relaxed px-2 sm:px-0" style="font-family: 'Josefin Sans', sans-serif;">
+                    A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
+                  </p>
+            </div>
+        </div>
+        
+        <div class="text-center relative z-10 mt-8 sm:mt-12 md:mt-16">
+            <a href="#portfolio" class="btn-hover border-2 border-pink-300 hover:bg-pink-400 hover:text-white text-black font-medium py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base transition-all duration-300 inline-block rounded-lg" style="font-family: 'Josefin Sans', sans-serif;">
+                Explore My Portfolio
+            </a>
+        </div>
+    </section>
+    
+    <!-- Desktop layout with background -->
+    <section id="home" class="hidden lg:flex min-h-screen bg-slideshow bg-cover bg-[right_44%_center] bg-no-repeat items-center justify-center py-20 relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute top-10 left-10 text-6xl text-stone-300 font-light" style="z-index: 3;">...</div>
+        <div class="absolute bottom-10 right-10" style="z-index: 3;">
+            <div class="flex space-x-1">
+                <div class="w-2 h-2 bg-pink-300 transform rotate-45"></div>
+                <div class="w-2 h-2 bg-pink-300 transform rotate-45"></div>
+                <div class="w-2 h-2 bg-pink-300 transform rotate-45"></div>
+                <div class="w-2 h-2 bg-stone-300 transform rotate-45"></div>
+                <div class="w-2 h-2 bg-stone-300 transform rotate-45"></div>
+                <div class="w-2 h-2 bg-stone-300 transform rotate-45"></div>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-2 text-center lg:text-left mt-8 lg:mt-24">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black mb-4 text-black leading-none" style="font-family: 'The Seasons', serif;">
+                       <span class="text-xl sm:text-2xl md:text-3xl font-normal text-pink-400" style="font-family: 'Josefin Sans', sans-serif;">Li Huey | Digital Creator</span>
+                        <span id="looping-words-desktop"></span><br>
+                       
+                    </h1>
+                    <p class="text-base sm:text-lg text-stone-700 mb-0 max-w-md mx-auto lg:mx-0" style="font-family: 'Josefin Sans', sans-serif;">
+                        A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 mt-12 lg:mt-24 justify-center lg:justify-start">
+                        
+                        <a href="#portfolio" class="btn-hover border-2 border-pink-300 hover:bg-pink-400 hover:text-white text-black font-medium py-3 px-6 text-base lg:text-lg transition-all duration-300 rounded-lg" style="font-family: 'Josefin Sans', sans-serif;">
+                            Explore My Portfolio
+                        </a>
+                    </div>
+                </div>
+                
+               
+                
+            </div>
+            
+     
+           
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-gradient-to-br from-stone-50 via-stone-25 to-amber-50 relative overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-amber-200 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-40 h-40 bg-stone-200 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <!-- Main About Section -->
+            
+            <div class="flex flex-col lg:flex-row items-center gap-4 mb-20">
+                <div class="lg:w-1/2 fade-in">
+                    <div class="relative group">
+                        <img id="mainAboutImage" src="Image/about (1).jpg" alt="Li Huey" class="floating-animation hover:shadow-pink-400/30 hover:shadow-2xl transition-all duration-500 rounded-2xl shadow-xl mx-auto transform group-hover:scale-105" style="width: 450px; height: 550px; object-fit: cover;">
+                        <div class="absolute inset-0 bg-gradient-to-t from-pink-400/15 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                </div>
+                
+                <!-- Right Side - Manual Slider -->
+                <div class="lg:w-1/2">
+                    <div>
+                        <!-- Slider Content -->
+                        <div class="slider-content mb-8" id="sliderContent">
+                            <!-- Slide 1: About Li Huey -->
+                            <div class="slide-item active" data-slide="0">
+                                <div class="mb-8">
+                                    <h3 class="text-4xl font-bold mb-4 text-black" style="font-family: 'The Seasons', serif;">About Li Huey</h3>
+                                </div>
+                                <div class="space-y-6">
+                                    <p class="text-lg text-stone-700 leading-relaxed" style="font-family: 'Josefin Sans', sans-serif;">
+                                        A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 mt-8">
+                                        <div class="text-center p-4 bg-white border border-stone-200 rounded-lg">
+                                            <div class="text-2xl font-bold text-pink-400 mb-2 counter" data-target="14244">0</div>
+                                            <div class="text-sm text-stone-700 font-medium">Instagram Followers</div>
+                                        </div>
+                                        <div class="text-center p-4 bg-white border border-stone-200 rounded-lg">
+                                            <div class="text-2xl font-bold text-pink-400 mb-2 counter" data-target="5.12" data-decimal="true">0</div>
+                                            <div class="text-sm text-stone-700 font-medium">Engagement Rate</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 2: My Style & What Inspires Me -->
+                            <div class="slide-item hidden" data-slide="1">
+                                <div class="mb-8">
+                                    <h3 class="text-4xl font-bold mb-4 text-black" style="font-family: 'The Seasons', serif;">My Style & Inspiration</h3>
+                                </div>
+                                <div class="space-y-6">
+                                    <p class="text-lg text-stone-700 leading-relaxed mb-8" style="font-family: 'Josefin Sans', sans-serif;">
+                                        Drawing inspiration from global travels, timeless fashion, and authentic storytelling to create content that resonates.
+                                    </p>
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <div class="flex items-center gap-4 p-4 bg-white border border-stone-200 rounded-lg">
+                                            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                                                <span class="text-pink-400 text-xl">✈️</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-semibold text-black">Travel & Culture</h4>
+                                                <p class="text-sm text-stone-700">Exploring destinations and sharing cultural experiences</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-4 p-4 bg-white border border-stone-200 rounded-lg">
+                                            <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center">
+                                                <span class="text-stone-700 text-xl">👗</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-semibold text-black">Fashion & Beauty</h4>
+                                                <p class="text-sm text-stone-700">Curating timeless style and beauty discoveries</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 3: What Drives Me -->
+                            <div class="slide-item hidden" data-slide="2">
+                                <div class="mb-8">
+                                    <h3 class="text-4xl font-bold mb-4 text-black" style="font-family: 'The Seasons', serif;">What Drives Me</h3>
+                                </div>
+                                <div class="space-y-6">
+                                    <p class="text-lg text-stone-700 leading-relaxed mb-8" style="font-family: 'Josefin Sans', sans-serif;">
+                                        My passion lies in creating meaningful connections and inspiring others through authentic storytelling and genuine brand partnerships.
+                                    </p>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-2 h-2 bg-pink-400 rounded-full mt-3 flex-shrink-0"></div>
+                                            <p class="text-stone-700" style="font-family: 'Josefin Sans', sans-serif;">Building authentic connections through genuine storytelling</p>
+                                        </div>
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-2 h-2 bg-stone-400 rounded-full mt-3 flex-shrink-0"></div>
+                                            <p class="text-stone-700" style="font-family: 'Josefin Sans', sans-serif;">Inspiring confidence and self-expression in others</p>
+                                        </div>
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-2 h-2 bg-pink-400 rounded-full mt-3 flex-shrink-0"></div>
+                                            <p class="text-stone-700" style="font-family: 'Josefin Sans', sans-serif;">Collaborating with brands that align with my values</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 4: My Creative Process -->
+                            <div class="slide-item hidden" data-slide="3">
+                                <div class="mb-8">
+                                    <h3 class="text-4xl font-bold mb-4 text-black" style="font-family: 'The Seasons', serif;">My Creative Process</h3>
+                                </div>
+                                <div class="space-y-6">
+                                    <p class="text-lg text-stone-700 leading-relaxed mb-8" style="font-family: 'Josefin Sans', sans-serif;">
+                                        Every piece of content is crafted with intention, from initial inspiration to final delivery, ensuring authenticity and quality.
+                                    </p>
+                                    <div class="space-y-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 bg-pink-400 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                                            <div>
+                                                <h4 class="font-semibold text-black mb-1">Inspiration & Research</h4>
+                                                <p class="text-sm text-stone-700">Finding authentic moments and trending topics</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 bg-stone-500 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                                            <div>
+                                                <h4 class="font-semibold text-black mb-1">Content Creation</h4>
+                                                <p class="text-sm text-stone-700">Crafting visually appealing and meaningful content</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 bg-pink-400 text-white rounded-full flex items-center justify-center font-bold">3</div>
+                                            <div>
+                                                <h4 class="font-semibold text-black mb-1">Community Engagement</h4>
+                                                <p class="text-sm text-stone-700">Connecting and building relationships with my audience</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!-- Navigation Controls -->
+                    <div class="flex justify-start gap-4">
+                        <button class="prev-btn bg-stone-600 hover:bg-stone-700 text-white px-6 py-2 rounded-full transition-all duration-300 font-medium" onclick="changeSlide(-1)" style="font-family: 'Josefin Sans', sans-serif;">
+                            Previous
+                        </button>
+                        <button class="next-btn bg-pink-400 hover:bg-pink-500 text-white px-6 py-2 rounded-full transition-all duration-300 font-medium" onclick="changeSlide(1)" style="font-family: 'Josefin Sans', sans-serif;">
+                            Next
+                        </button>
+                    </div>
+                </div>
+                        
+            <!-- Gallery Section -->
+            <div>
+                <div class="flex flex-wrap gap-4 items-center justify-start pt-8">
+                    <img src="Image/about (1).jpg"
+                         alt="Li Huey at Work"
+                         class="gallery-thumbnail object-cover rounded-2xl opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer border-3 border-transparent hover:border-pink-400 shadow-lg hover:shadow-xl"
+                         style="width: 100px; height: 100px;"
+                         data-main-src="Image/about (1).jpg">
+                    
+                    <img src="Image/about (2).jpg"
+                         alt="Fashion Content"
+                         class="gallery-thumbnail object-cover rounded-2xl opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer border-3 border-transparent hover:border-pink-400 shadow-lg hover:shadow-xl"
+                         style="width: 100px; height: 100px;"
+                         data-main-src="Image/about (2).jpg">
+                    
+                    <img src="Image/about (3).jpg"
+                         alt="Travel Inspiration"
+                         class="gallery-thumbnail object-cover rounded-2xl opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer border-3 border-pink-400 shadow-lg hover:shadow-xl"
+                         style="width: 100px; height: 100px;"
+                         data-main-src="Image/about (3).jpg">
+                         
+                    <img src="Image/about (4).jpg"
+                         alt="Beauty & Lifestyle"
+                         class="gallery-thumbnail object-cover rounded-2xl opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer border-3 border-transparent hover:border-pink-400 shadow-lg hover:shadow-xl"
+                         style="width: 100px; height: 100px;"
+                         data-main-src="Image/about (4).jpg">
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Partnerships</h2>
+                <p class="text-xl max-w-3xl mx-auto text-stone-700" style="font-family: 'Josefin Sans', sans-serif;">Explore my creative work and innovative design solutions across various industries.</p>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div id="portfolioGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-full mx-auto px-4">
+                <!-- First 8 videos (initially visible) -->
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/amber.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/amber.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/amber.png" alt="Amber Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/argie.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/argie.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/argie.png" alt="Argie Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/barista.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/barista.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/barista.png" alt="Barista Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/biomiq.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/biomiq.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/biomiq.png" alt="Biomiq Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/clayquench.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/clayquench.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/clayquench.png" alt="Clayquench Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/cocoenzyme.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/cocoenzyme.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/cocoenzyme.png" alt="Cocoenzyme Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/earthrise.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/earthrise.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/earthrise.png" alt="Earthrise Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch" data-batch="1">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/easydays.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/easydays.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/easydays.png" alt="Easydays Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Second batch (9-16) - Hidden initially -->
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/europcar.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/europcar.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/europcar.png" alt="Europcar Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/floever.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/floever.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/floever.png" alt="Floever Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/founist.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/founist.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/founist.png" alt="Founist Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/halara.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/halara.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/halara.jpg" alt="Halara Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/hannah.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/hannah.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/hannah.png" alt="Hannah Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/hashfilm.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/hashfilm.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/hashfilm.jpg" alt="Hashfilm Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/houseofsundar.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/houseofsundar.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/houseofsundar.png" alt="House of Sundar Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="2">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/huski.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/huski.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/huski.png" alt="Huski Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Third batch (17-24) - Hidden initially -->
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/js.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/js.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/js.png" alt="JS Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/kakoo.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/kakoo.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/kakoo.jpg" alt="Kakoo Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/kuose.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/kuose.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/kuose.png" alt="Kuose Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/littleurchin.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/littleurchin.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/littleurchin.png" alt="Little Urchin Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/luxury.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/luxury.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/luxury.png" alt="Luxury Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/mt.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/mt.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/mt.jpg" alt="MT Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/mydeadgrandpa.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/mydeadgrandpa.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/mydeadgrandpa.png" alt="My Dead Grandpa Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="3">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/notesoflove.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/notesoflove.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/notesoflove.png" alt="Notes of Love Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Fourth batch (25-32) - Hidden initially -->
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/oodie.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/oodie.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/oodie.png" alt="Oodie Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/paste.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/paste.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/paste.png" alt="Paste Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/qure.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/qure.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/qure.jpg" alt="Qure Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/ringparadise.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/ringparadise.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/ringparadise.jpg" alt="Ring Paradise Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/second.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/second.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/second.png" alt="Second Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/smichy.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/smichy.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/smichy.png" alt="Smichy Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/tessera.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/tessera.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/tessera.png" alt="Tessera Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="4">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/tingletoes.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/tingletoes.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/tingletoes.png" alt="Tingletoes Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Fifth batch (33-36) - Hidden initially -->
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="5">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/wanderingfox.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/wanderingfox.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/wanderingfox.jpg" alt="Wandering Fox Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="5">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/weary.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/weary.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/weary.png" alt="Weary Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="5">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/yoose.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/yoose.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/yoose.jpg" alt="Yoose Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="portfolio-item fade-in portfolio-batch hidden" data-batch="5">
+                    <div class="relative group cursor-pointer" onclick="openPortfolioVideo('Portfolio/zuluz.mp4')">
+                        <video class="w-full h-64 object-cover rounded-lg shadow-lg" muted loop playsinline preload="none" loading="lazy">
+                             <source src="Portfolio/zuluz.mp4" type="video/mp4">
+                         </video>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3">
+                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 5v10l8-5-8-5z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Portfolio/zuluz.png" alt="Zuluz Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            <!-- View More/Less Buttons -->
+            <div class="text-center mt-8">
+                <button id="viewMoreBtn" class="bg-gradient-to-r from-pink-400 to-stone-600 text-white px-8 py-3 rounded-full font-semibold hover:from-pink-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 mr-4">
+                    View More
+                </button>
+                <button id="viewLessBtn" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hidden">
+                    View Less
+                </button>
+            </div>
+        </section>
+
+        <script>
+            // Optimized Portfolio pagination functionality
+            let currentBatch = 1;
+            const maxBatch = 5;
+            const viewMoreBtn = document.getElementById('viewMoreBtn');
+            const viewLessBtn = document.getElementById('viewLessBtn');
+            let isAnimating = false;
+            
+            // Cache DOM elements for better performance
+            const batchCache = new Map();
+            for (let i = 1; i <= maxBatch; i++) {
+                batchCache.set(i, document.querySelectorAll(`[data-batch="${i}"]`));
+            }
+
+            function showBatch(batchNumber) {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                const batchItems = batchCache.get(batchNumber);
+                if (!batchItems) return;
+                
+                // Use requestAnimationFrame for smoother animations
+                requestAnimationFrame(() => {
+                    batchItems.forEach((item, index) => {
+                        item.classList.remove('hidden');
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        
+                        // Stagger the animation for better visual effect
+                        setTimeout(() => {
+                            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, index * 50);
+                    });
+                    
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, batchItems.length * 50 + 300);
+                });
+            }
+
+            function hideBatch(batchNumber) {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                const batchItems = batchCache.get(batchNumber);
+                if (!batchItems) return;
+                
+                requestAnimationFrame(() => {
+                    batchItems.forEach((item, index) => {
+                        item.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(-10px)';
+                        
+                        setTimeout(() => {
+                            item.classList.add('hidden');
+                            item.style.transform = '';
+                            item.style.transition = '';
+                        }, 200);
+                    });
+                    
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 250);
+                });
+            }
+
+            function updateButtons() {
+                // Batch DOM updates
+                requestAnimationFrame(() => {
+                    viewMoreBtn.style.display = currentBatch >= maxBatch ? 'none' : 'inline-block';
+                    viewLessBtn.style.display = currentBatch > 1 ? 'inline-block' : 'none';
+                });
+            }
+
+            // Debounced event handlers
+            let viewMoreTimeout, viewLessTimeout;
+            
+            viewMoreBtn.addEventListener('click', () => {
+                if (isAnimating || currentBatch >= maxBatch) return;
+                
+                clearTimeout(viewMoreTimeout);
+                viewMoreTimeout = setTimeout(() => {
+                    currentBatch++;
+                    showBatch(currentBatch);
+                    updateButtons();
+                }, 50);
+            });
+
+            viewLessBtn.addEventListener('click', () => {
+                if (isAnimating || currentBatch <= 1) return;
+                
+                clearTimeout(viewLessTimeout);
+                viewLessTimeout = setTimeout(() => {
+                    hideBatch(currentBatch);
+                    currentBatch--;
+                    updateButtons();
+                }, 50);
+            });
+
+            // Initialize buttons
+            updateButtons();
+        </script>
+
+    <!-- Brand Shoots Section -->
+    <section id="brand-shoot" class="py-20 bg-stone-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Brand Shoots</h2>
+                <p class="text-xl max-w-3xl mx-auto text-stone-700" style="font-family: 'Josefin Sans', sans-serif;">Discover my professional brand photography and creative campaigns across diverse industries.</p>
+            </div>
+            
+            <!-- Brand Shoots Grid -->
+            <div id="brandShootsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-full mx-auto px-4" style="min-height: 800px;">
+                <!-- Acelabs -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('acelabs')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/acelabs (1).jpg" alt="Acelabs Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/acelabs (2).jpg" alt="Acelabs Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/acelabs.png" alt="Acelabs Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Adorn -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('adorn')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/adorn (1).jpg" alt="Adorn Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/adorn (2).jpg" alt="Adorn Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/adorn.png" alt="Adorn Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Anchor -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('anchor')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/anchor (1).jpg" alt="Anchor Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/anchor (2).jpg" alt="Anchor Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/anchor.jpg" alt="Anchor Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Bagsmart -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('bagsmart')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/bagsmart (1).jpg" alt="Bagsmart Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/bagsmart (2).jpg" alt="Bagsmart Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/bagsmart.png" alt="Bagsmart Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Bamboo -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('bamboo')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/bamboo (1).jpg" alt="Bamboo Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/bamboo (2).jpg" alt="Bamboo Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/bamboosleeps.png" alt="Bamboo Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Banish -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('banish')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/banish (1).jpg" alt="Banish Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/banish (2).jpg" alt="Banish Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/banish.png" alt="Banish Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Beads -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('beads')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/beads (1).jpg" alt="Beads Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/beads (2).jpg" alt="Beads Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/beedie.jpg" alt="Beads Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Bio -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('bio')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/bio (1).jpg" alt="Bio Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/bio (2).jpg" alt="Bio Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/bio.png" alt="Bio Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Clean -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('clean')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/clean (1).jpg" alt="Clean Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/clean (2).jpg" alt="Clean Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/clean.png" alt="Clean Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Divas -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('divas')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/divas (1).jpg" alt="Divas Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/divas (2).jpg" alt="Divas Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/divas.png" alt="Divas Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Etihad -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('etihad')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/etihad (1).jpg" alt="Etihad Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/etihad (2).jpg" alt="Etihad Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/etihad.png" alt="Etihad Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Element Brooklyn -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('elementbrooklyn')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/elementbrooklyn (1).jpg" alt="Element Brooklyn Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/elementbrooklyn (2).jpg" alt="Element Brooklyn Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/elementbrooklyn.jpg" alt="Element Brooklyn Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Goodapple -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('goodapple')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/goodapple (1).jpg" alt="Goodapple Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/goodapple (2).jpg" alt="Goodapple Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/goodapple.jpg" alt="Goodapple Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Hadalabo -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('hadalabo')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/hadalabo (1).jpg" alt="Hadalabo Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/hadalabo (2).jpg" alt="Hadalabo Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/hadalabo.png" alt="Hadalabo Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Hundred -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('hundred')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/hundred (1).jpg" alt="Hundred Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/hundred (2).jpg" alt="Hundred Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/hundred.png" alt="Hundred Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Lovethyoils -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('lovethyoils')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/lovethyoils (1).jpg" alt="Lovethyoils Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/lovethyoils (2).jpg" alt="Lovethyoils Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/lovethyoils.png" alt="Lovethyoils Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Lovito -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('lovito')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/lovito (1).jpg" alt="Lovito Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/lovito (2).jpg" alt="Lovito Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/lovito.png" alt="Lovito Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Montigo -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('montigo')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/montigo (1).jpg" alt="Montigo Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/montigo (2).jpg" alt="Montigo Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/montigo.jpeg" alt="Montigo Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- MXP -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('mxp')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/mxp (1).jpg" alt="MXP Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/mxp (2).jpg" alt="MXP Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/mxp.jpg" alt="MXP Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Oxfordwhite -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('oxfordwhite')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/oxfordwhite (1).jpg" alt="Oxfordwhite Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/oxfordwhite (2).jpg" alt="Oxfordwhite Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/oxfordwhite.png" alt="Oxfordwhite Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Print -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('print')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/print (1).jpg" alt="Print Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/print (2).jpg" alt="Print Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/print.png" alt="Print Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Starkhaven -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('starkhaven')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/starkhaven (1).jpg" alt="Starkhaven Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/starkhaven (2).jpg" alt="Starkhaven Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/starkhaven.png" alt="Starkhaven Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Styleupuk -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('styleupuk')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/styleupuk (1).jpg" alt="Styleupuk Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/styleupuk (2).jpg" alt="Styleupuk Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/styleupuk.jpg" alt="Styleupuk Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Tippi -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('tippi')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/tippi (1).jpg" alt="Tippi Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/tippi (2).jpg" alt="Tippi Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/tippi.png" alt="Tippi Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Zalora -->
+                <div class="brand-shoot-item fade-in">
+                    <div class="relative group cursor-pointer" onclick="openBrandModal('zalora')">
+                        <img class="brand-main-img w-full h-[32rem] object-cover rounded-lg shadow-lg transition-opacity duration-300" 
+                             src="Brand/zalora (1).webp" alt="Zalora Brand Shoot" loading="lazy">
+                        <img class="brand-hover-img w-full h-[32rem] object-cover rounded-lg shadow-lg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                             src="Brand/zalora (2).webp" alt="Zalora Brand Shoot 2" loading="lazy">
+                    </div>
+                    <div class="text-center mt-3">
+                        <img src="Brand/zalora.png" alt="Zalora Logo" class="w-20 h-12 mx-auto mb-1 object-contain" loading="lazy">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Brand Pagination Controls -->
+            <div class="text-center mt-12 fade-in">
+                <button id="brandViewMoreBtn" class="bg-gradient-to-r from-pink-400 to-stone-600 text-white px-8 py-3 rounded-full font-semibold hover:from-pink-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 mr-4">
+                    View More
+                </button>
+                <button id="brandViewLessBtn" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hidden">
+                    View Less
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="socials" class="pt-12 pb-8 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in border-b-2 border-pink-300 rounded-lg p-4">
+                <h2 class=" text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Socials</h2>
+                <p class="text-xl text-gray-500 max-w-3xl mx-auto" style="font-family: 'Josefin Sans', sans-serif;">Connect with Li Huey on Social Media</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 border-b-2 border-pink-300 rounded-lg p-8  " style="font-family: 'Josefin Sans', sans-serif;">
+                <!-- Instagram Card -->
+                <a href="https://www.instagram.com/lihueyyy/" target="_blank" class="social-card p-8 rounded-lg shadow-md border-2 border-pink-200 hover:border-pink-400 transform hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(236,72,153,0.25)] transition-all duration-300 group bg-white hover:bg-gradient-to-br hover:from-pink-50 hover:to-red-50 cursor-pointer">
+                    <div class="flex justify-center mb-4">
+                        <i class="fab fa-instagram text-5xl text-pink-500 transform group-hover:scale-125 transition-transform duration-200"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold text-lg group-hover:text-pink-700 transition-colors duration-300 mb-2">Instagram</h3>
+                        <p class="text-gray-700 group-hover:text-gray-800 transition-colors duration-300">@lihueyyy</p>
+                        <p class="text-sm text-gray-600 mt-2">Follow for daily updates</p>
+                    </div>
+                </a>
+
+                <!-- Facebook Card -->
+                <a href="https://www.facebook.com/lihueyyy" target="_blank" class="social-card p-8 rounded-lg shadow-md border-2 border-pink-200 hover:border-pink-400 transform hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(236,72,153,0.25)] transition-all duration-300 group bg-white hover:bg-gradient-to-br hover:from-pink-50 hover:to-red-50 cursor-pointer">
+                    <div class="flex justify-center mb-4">
+                        <i class="fab fa-facebook text-5xl text-blue-600 transform group-hover:scale-125 transition-transform duration-200"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold text-lg group-hover:text-pink-700 transition-colors duration-300 mb-2">Facebook</h3>
+                        <p class="text-gray-700 group-hover:text-gray-800 transition-colors duration-300">Li Huey Khoo</p>
+                        <p class="text-sm text-gray-600 mt-2">Connect on Facebook</p>
+                    </div>
+                </a>
+
+                <!-- Linktree Card -->
+                <a href="https://linktr.ee/lihueyyy?fbclid=PAZXh0bgNhZW0CMTEAAafThywCntLDlkxYxCI0BUyDCIl5Zht7SD2Vj1OLotlTb9H-hgAIA-e5NiNkig_aem_f3bdU550jOnwbj7zBl8Svw" target="_blank" class="social-card p-8 rounded-lg shadow-md border-2 border-pink-200 hover:border-pink-400 transform hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(236,72,153,0.25)] transition-all duration-300 group bg-white hover:bg-gradient-to-br hover:from-pink-50 hover:to-red-50 cursor-pointer">
+                    <div class="flex justify-center mb-4">
+                        <i class="fas fa-link text-5xl text-green-500 transform group-hover:scale-125 transition-transform duration-200"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold text-lg group-hover:text-pink-700 transition-colors duration-300 mb-2">Linktree</h3>
+                        <p class="text-gray-700 group-hover:text-gray-800 transition-colors duration-300">Li Huey | Digital Creator</p>
+                        <p class="text-sm text-gray-600 mt-2">All links in one place</p>
+                    </div>
+                </a>
+
+                <!-- Email Card -->
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=lihueyyy@gmail.com&su=Collaboration%20Inquiry" target="_blank" class="social-card p-8 rounded-lg shadow-md border-2 border-pink-200 hover:border-pink-400 transform hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(236,72,153,0.25)] transition-all duration-300 group bg-white hover:bg-gradient-to-br hover:from-pink-50 hover:to-red-50 cursor-pointer">
+                    <div class="flex justify-center mb-4">
+                        <i class="fas fa-envelope text-5xl text-red-500 transform group-hover:scale-125 transition-transform duration-200"></i>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-semibold text-lg group-hover:text-pink-700 transition-colors duration-300 mb-2">Email</h3>
+                        <p class="text-gray-700 group-hover:text-gray-800 transition-colors duration-300">lihueyyy@gmail.com</p>
+                        <p class="text-sm text-gray-600 mt-2">Send a message</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+<!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center fade-in">
+                <h2 class=" text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Contact</h2>
+                <p class="text-xl mb-8 text-stone-700" style="font-family: 'The Seasons', serif;">Get in touch for collaboration inquiries and business opportunities.</p>
+                
+                <!-- Contact Info -->
+                <div class="mb-8">
+                    <a href="mailto:lihueyyy@gmail.com" class="inline-flex items-center text-2xl text-stone-700 hover:text-pink-400 transition-colors duration-300 mb-4">
+                        <i class="fas fa-envelope mr-3"></i>
+                        lihueyyy@gmail.com
+                    </a>
+                </div>
+                
+                <div class="bg-stone-50 rounded-xl p-8 max-w-2xl mx-auto fade-in hover-scale border-b-2 border-pink-300 rounded-lg p-4">
+                    <h3 class="font-monest text-2xl mb-6 text-black" style="font-family: 'The Seasons', serif;">Collaboration Inquiry Form</h3>
+                    
+                    <form class="space-y-4" style="font-family: 'Josefin Sans', sans-serif;" action="mailto:lihueyyy@gmail.com" method="post" enctype="text/plain">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="collab-name" class="block text-left mb-1">Name</label>
+                                <input type="text" id="collab-name" name="name" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
+                            </div>
+                            <div>
+                                <label for="collab-email" class="block text-left mb-1">Email</label>
+                                <input type="email" id="collab-email" name="email" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="collab-company" class="block text-left mb-1">Company/Brand</label>
+                            <input type="text" id="collab-company" name="company" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
+                        </div>
+                        <div>
+                            <label for="collab-type" class="block text-left mb-1">Collaboration Type</label>
+                            <select id="collab-type" name="collaboration-type" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
+                                <option value="">Select collaboration type</option>
+                                <option value="brand-partnership">Brand Partnership</option>
+                                <option value="sponsored-content">Sponsored Content</option>
+                                <option value="product-review">Product Review</option>
+                                <option value="event-coverage">Event Coverage</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="collab-message" class="block text-left mb-1">Message</label>
+                            <textarea id="collab-message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" placeholder="Please describe your collaboration proposal..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-hover bg-gradient-to-r from-pink-400 to-stone-600 text-white px-8 py-3 rounded-full font-medium hover:from-pink-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-stone-100 py-12">
+        <div class="container mx-auto px-6">
+            <div class="mb-8">
+                <!-- Centered Li Huey branding -->
+                <div class="text-center mb-8">
+                    <span class="text-3xl font-bold text-pink-400" style="font-family: 'The Seasons', serif; letter-spacing: 2px;">Li Huey</span>
+                    <p class="mt-4 text-stone-300 max-w-md mx-auto">A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences.</p>
+                </div>
+                
+                <!-- Centered content layout -->
+                <div class="flex flex-col md:flex-row justify-center items-start md:items-center gap-8 md:gap-16">
+                    <!-- Quick Links -->
+                    <div class="text-center" style="font-family: 'Josefin Sans', sans-serif;">
+                        <h4 class="font-semibold text-lg mb-4 text-white">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#home" class="text-stone-300 hover:text-pink-400 transition-colors duration-300">Home</a></li>
+                            <li><a href="#about" class="text-stone-300 hover:text-pink-400 transition-colors duration-300">About</a></li>
+                            <li><a href="#portfolio" class="text-stone-300 hover:text-pink-400 transition-colors duration-300">Partnerships</a></li>
+                            <li><a href="#brand-shoot" class="text-stone-300 hover:text-pink-400 transition-colors duration-300">Brand Shoot</a></li>
+                            <li><a href="#contact" class="text-stone-300 hover:text-pink-400 transition-colors duration-300">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Social Media Icons -->
+                    <div class="text-center">
+                        <h4 class="font-semibold text-lg mb-4 text-white" style="font-family: 'Josefin Sans', sans-serif;">Connect</h4>
+                        <div class="flex justify-center space-x-4">
+                            <a href="https://www.instagram.com/lihueyyy/" target="_blank" class="text-2xl text-stone-300 hover:text-pink-400 transition-colors duration-300 transform hover:scale-110">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/lihueyyy" target="_blank" class="text-2xl text-stone-300 hover:text-pink-400 transition-colors duration-300 transform hover:scale-110">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://linktr.ee/lihueyyy?fbclid=PAZXh0bgNhZW0CMTEAAafThywCntLDlkxYxCI0BUyDCIl5Zht7SD2Vj1OLotlTb9H-hgAIA-e5NiNkig_aem_f3bdU550jOnwbj7zBl8Svw" target="_blank" class="text-2xl text-stone-300 hover:text-pink-400 transition-colors duration-300 transform hover:scale-110">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=lihueyyy@gmail.com&su=Collaboration%20Inquiry" target="_blank" class="text-2xl text-stone-300 hover:text-pink-400 transition-colors duration-300 transform hover:scale-110">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-stone-700 text-center text-stone-400" style="font-family: 'The Seasons', serif;">
+                <p class="font-bold mb-2">&copy; 2025 Li Huey</p>
+                <p class="text-sm">Built by <a href="https://thefreewebsitewizards.com/?fbclid=PAZXh0bgNhZW0CMTEAAad0Jm-GNlXnPPJ1LVG1DBVBoUGdRHC5m3FFwUqGHjUfujAnDPDhsINN8mAv1A_aem_owWh2qpkEErFPYCqV9cPEg" class="text-pink-400 hover:text-pink-300" target="_blank">The Free Website Wizards</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('-translate-x-full');
+        }
+        
+        menuBtn.addEventListener('click', toggleMobileMenu);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Scroll animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Counter animation with Intersection Observer
+        function animateCounter(element, target, isDecimal = false) {
+            const duration = 2000; // 2 seconds
+            const start = 0;
+            const increment = target / (duration / 16); // 60fps
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                if (isDecimal) {
+                    element.textContent = current.toFixed(2) + '%';
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+        
+        // Intersection Observer for counters
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    const target = parseFloat(element.dataset.target);
+                    const isDecimal = element.dataset.decimal === 'true';
+                    
+                    animateCounter(element, target, isDecimal);
+                    counterObserver.unobserve(element); // Only animate once
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+        
+        // Observe all counter elements
+        document.querySelectorAll('.counter').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+        
+
+        
+        // Sticky navigation
+        const nav = document.querySelector('nav');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            if (lastScrollY < window.scrollY) {
+                // Scrolling down
+                nav.classList.add('-translate-y-full');
+            } else {
+                // Scrolling up
+                nav.classList.remove('-translate-y-full');
+            }
+            
+            lastScrollY = window.scrollY;
+        });
+        
+        // Newsletter subscription handler
+        const newsletterForm = document.querySelector('form');
+        const emailInput = newsletterForm.querySelector('input[type="email"]');
+        const subscribeButton = newsletterForm.querySelector('button[type="submit"]');
+        
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            if (email && email.includes('@')) {
+                // Show success message
+                alert('Thank you for subscribing! Your email has been sent successfully.');
+                
+                // Clear the input field
+                emailInput.value = '';
+                
+                // Temporarily change button text and style
+                const originalText = subscribeButton.textContent;
+                const originalClasses = subscribeButton.className;
+                
+                subscribeButton.textContent = 'Subscribed!';
+                subscribeButton.className = originalClasses.replace('bg-pink-600 hover:bg-pink-700', 'bg-green-600 hover:bg-green-700');
+                subscribeButton.disabled = true;
+                
+                // Redirect to home page after showing success message
+                setTimeout(() => {
+                    window.location.href = '#';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    subscribeButton.textContent = originalText;
+                    subscribeButton.className = originalClasses;
+                    subscribeButton.disabled = false;
+                }, 3000);
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+        // Video Gallery JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbnailItems = document.querySelectorAll('.thumbnail-item');
+    const mainThumbnail = document.getElementById('mainThumbnail');
+    const mainTitle = document.getElementById('mainTitle');
+    const mainPlayButton = document.getElementById('mainPlayButton');
+    let currentVideoUrl = 'Portfolio/founist.mp4'; // Default URL
+    
+    // Add click event to main play button
+    if (mainPlayButton) {
+        mainPlayButton.addEventListener('click', function() {
+        // Create video modal
+        const videoModal = document.createElement('div');
+        videoModal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+        videoModal.innerHTML = `
+            <div class="relative max-w-none w-auto mx-4 flex items-center justify-center">
+                <button class="absolute -top-10 right-4 text-white text-2xl hover:text-gray-300 z-10" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                <video controls autoplay class="max-w-full max-h-[90vh] w-auto h-auto rounded-lg" style="object-fit: contain;">
+                    <source src="${currentVideoUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        `;
+        document.body.appendChild(videoModal);
+        });
+    }
+    
+    // Add click event listeners to thumbnail items
+    thumbnailItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from all items
+            thumbnailItems.forEach(thumb => thumb.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // Get data from clicked thumbnail
+            const newTitle = this.getAttribute('data-title');
+            const newImage = this.getAttribute('data-image');
+            const newUrl = this.getAttribute('data-url');
+            
+            // Update current video URL
+            currentVideoUrl = newUrl;
+            
+            // Update main video section with smooth transition
+            mainThumbnail.style.opacity = '0.7';
+            
+            // Extract project name for channel name only
+            const projectName = newTitle.split(' - ')[0];
+            const channelName = document.querySelector('.channel-name');
+            
+            setTimeout(() => {
+                mainThumbnail.src = newImage;
+                mainTitle.textContent = newTitle;
+                channelName.textContent = projectName;
+                mainThumbnail.style.opacity = '1';
+            }, 150);
+            
+            // Add a subtle pulse effect to the main thumbnail
+            mainThumbnail.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                mainThumbnail.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Add double-click to open video directly from thumbnail
+        item.addEventListener('dblclick', function() {
+            const videoUrl = this.getAttribute('data-url');
+            // Create video modal
+            const videoModal = document.createElement('div');
+            videoModal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+            videoModal.innerHTML = `
+                <div class="relative max-w-none w-auto mx-4 flex items-center justify-center">
+                    <button class="absolute -top-10 right-4 text-white text-2xl hover:text-gray-300 z-10" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                    <video controls autoplay class="max-w-full max-h-[90vh] w-auto h-auto rounded-lg" style="object-fit: contain;">
+                        <source src="${videoUrl}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            `;
+            document.body.appendChild(videoModal);
+        });
+        
+        // Add hover effects for better UX
+        item.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('active')) {
+                this.style.transform = 'translateX(4px)';
+            }
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
+    
+    // Add smooth scrolling behavior to sidebar
+    const sidebar = document.querySelector('.sidebar-thumbnails');
+    let isScrolling = false;
+    
+    sidebar.addEventListener('scroll', function() {
+        if (!isScrolling) {
+            window.requestAnimationFrame(function() {
+                // Add any scroll-based animations here if needed
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+    
+    // Add keyboard navigation support
+    document.addEventListener('keydown', function(e) {
+        const activeItem = document.querySelector('.thumbnail-item.active');
+        let nextItem = null;
+        
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            nextItem = activeItem.nextElementSibling;
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            nextItem = activeItem.previousElementSibling;
+        }
+        
+        if (nextItem && nextItem.classList.contains('thumbnail-item')) {
+            nextItem.click();
+            nextItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    });
+    
+    // Add intersection observer for lazy loading effect
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '50px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Initially hide thumbnails for animation
+    thumbnailItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        item.style.transitionDelay = `${index * 50}ms`;
+        observer.observe(item);
+    });
+});
+
+// Add this to your existing JavaScript section
+// About section image gallery functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.getElementById('mainAboutImage');
+    const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+    
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            // Remove active class from all thumbnails
+            thumbnails.forEach(thumb => {
+                thumb.classList.remove('active');
+                thumb.style.borderColor = 'transparent';
+            });
+            
+            // Add active class to clicked thumbnail
+            this.classList.add('active');
+            this.style.borderColor = '#ec4899';
+            
+            // Change main image with smooth transition
+            mainImage.style.opacity = '0';
+            
+            setTimeout(() => {
+                mainImage.src = this.dataset.mainSrc;
+                mainImage.alt = this.alt;
+                mainImage.style.opacity = '1';
+            }, 200);
+        });
+    });
+    
+    // Set initial active thumbnail (the logo one)
+    const initialActive = document.querySelector('.gallery-thumbnail[data-main-src="Image/logoGGG.jpg"]');
+    if (initialActive) {
+        initialActive.classList.add('active');
+        initialActive.style.borderColor = '#ec4899';
+    }
+});
+
+
+
+// Background Slideshow Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const backgroundImages = [
+        'Image/white-bg.png',
+        'Image/white-bg (1).png',
+        'Image/white-bg (2).png'
+    ];
+    
+    const slideshowContainers = document.querySelectorAll('.bg-slideshow');
+    let currentImageIndex = 0;
+    
+    console.log('Slideshow initialized. Found', slideshowContainers.length, 'containers and', backgroundImages.length, 'images');
+    
+    function changeBackground() {
+        console.log('Changing background to image', currentImageIndex, ':', backgroundImages[currentImageIndex]);
+        
+        slideshowContainers.forEach(container => {
+            container.style.backgroundImage = `url('${backgroundImages[currentImageIndex]}')`;
+        });
+        
+        currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+    }
+    
+    // Set initial background
+    if (slideshowContainers.length > 0 && backgroundImages.length > 0) {
+        changeBackground();
+        console.log('Starting slideshow with', backgroundImages.length, 'images');
+        setInterval(changeBackground, 4000);
+    } else {
+        console.log('No slideshow containers or images found!');
+    }
+    
+    // Looping words functionality
+    const words = ['LIFESTYLE', 'FASHION', 'TRAVEL'];
+    const mobileElement = document.getElementById('looping-words-mobile');
+    const desktopElement = document.getElementById('looping-words-desktop');
+    let currentWordIndex = 0;
+
+    function changeWord() {
+        // Set the text content for both mobile and desktop elements
+        if (mobileElement) {
+            mobileElement.textContent = words[currentWordIndex];
+        }
+        if (desktopElement) {
+            desktopElement.textContent = words[currentWordIndex];
+        }
+
+        // Move to the next word after 4 seconds (each word stays for 4 seconds)
+        currentWordIndex = (currentWordIndex + 1) % words.length;
+    }
+
+    // Start immediately with the first word and then change after 4 seconds
+    if (mobileElement || desktopElement) {
+        changeWord(); // Immediately change the word to start with
+        setInterval(changeWord, 4000); // Change word every 4 seconds
+    }
+    
+    // Manual Slider Functionality
+    let currentSlideIndex = 0;
+    const totalSlides = 4;
+    
+    // Make changeSlide function globally accessible
+    window.changeSlide = function(direction) {
+        // Hide current slide
+        const currentSlide = document.querySelector('.slide-item.active');
+        if (currentSlide) {
+            currentSlide.classList.remove('active');
+            currentSlide.classList.add('hidden');
+        }
+        
+        // Update slide index
+        currentSlideIndex += direction;
+        
+        if (currentSlideIndex >= totalSlides) {
+            currentSlideIndex = 0;
+        } else if (currentSlideIndex < 0) {
+            currentSlideIndex = totalSlides - 1;
+        }
+        
+        // Show new slide
+        const newSlide = document.querySelector(`[data-slide="${currentSlideIndex}"]`);
+        if (newSlide) {
+            newSlide.classList.remove('hidden');
+            newSlide.classList.add('active');
+            
+            // Reset and animate counters if this is slide 1 (index 0)
+            if (currentSlideIndex === 0) {
+                const counters = newSlide.querySelectorAll('.counter');
+                counters.forEach(counter => {
+                    // Reset counter to 0
+                    counter.textContent = '0';
+                    
+                    // Re-animate the counter
+                    const target = parseFloat(counter.dataset.target);
+                    const isDecimal = counter.dataset.decimal === 'true';
+                    animateCounter(counter, target, isDecimal);
+                });
+            }
+        }
+    };
+});
+
+// Optimized Portfolio video lazy loading with immediate first batch loading
+function setupVideoLazyLoading() {
+    const videos = document.querySelectorAll('.portfolio-item video');
+    const firstBatchVideos = document.querySelectorAll('[data-batch="1"] video');
+    let observerTimeout;
+    
+    // Preload first batch videos immediately for instant visibility
+    firstBatchVideos.forEach((video, index) => {
+        video.setAttribute('data-loading', 'true');
+        video.preload = 'metadata';
+        
+        // Add error handling
+        video.addEventListener('error', function() {
+            video.removeAttribute('data-loading');
+            console.log('Video load error (normal for lazy loading):', video.src);
+        }, { once: true });
+        
+        video.addEventListener('loadeddata', function() {
+            video.removeAttribute('data-loading');
+            video.currentTime = 0.1; // Show first frame
+        }, { once: true });
+        
+        // Stagger loading to prevent blocking
+        setTimeout(() => {
+            video.load();
+            
+            // Fallback cleanup
+            setTimeout(() => {
+                video.removeAttribute('data-loading');
+            }, 3000);
+        }, index * 100); // Increased stagger for better performance
+    });
+    
+    // Debounced intersection observer for remaining videos
+    const videoObserver = new IntersectionObserver((entries) => {
+        clearTimeout(observerTimeout);
+        observerTimeout = setTimeout(() => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    const container = video.closest('.portfolio-item');
+                    
+                    // Skip if already loaded (first batch)
+                    if (video.preload === 'metadata') {
+                        videoObserver.unobserve(video);
+                        return;
+                    }
+                    
+                    // Load video immediately when in viewport
+                    video.preload = 'metadata';
+                    video.load();
+                    
+                    // Stop observing this video
+                    videoObserver.unobserve(video);
+                }
+            });
+        }, 50); // Reduced debounce for faster response
+    }, {
+        rootMargin: '300px', // Much larger margin for earlier loading
+        threshold: 0.05
+    });
+    
+    // Observe all videos except first batch
+    videos.forEach(video => {
+        const isFirstBatch = video.closest('[data-batch="1"]');
+        if (!isFirstBatch) {
+            video.preload = 'none';
+            video.loading = 'lazy';
+            videoObserver.observe(video);
+        }
+    });
+}
+
+// Initialize lazy loading when page loads
+document.addEventListener('DOMContentLoaded', setupVideoLazyLoading);
+
+// Portfolio video modal function
+function openPortfolioVideo(videoUrl) {
+    // Create video modal
+    const videoModal = document.createElement('div');
+    videoModal.className = 'fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50';
+    videoModal.innerHTML = `
+        <div class="relative max-w-none w-auto mx-4 flex items-center justify-center">
+            <button class="absolute -top-10 right-4 text-white text-3xl hover:text-gray-300 z-10 transition-colors duration-200" onclick="this.parentElement.parentElement.remove()">&times;</button>
+            <video controls autoplay class="max-w-full max-h-[90vh] w-auto h-auto rounded-lg shadow-2xl" style="object-fit: contain;">
+                <source src="${videoUrl}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    `;
+    
+    // Add click outside to close
+    videoModal.addEventListener('click', function(e) {
+        if (e.target === videoModal) {
+            videoModal.remove();
+        }
+    });
+    
+    // Add escape key to close
+    const handleEscape = function(e) {
+        if (e.key === 'Escape') {
+            videoModal.remove();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+    
+    document.body.appendChild(videoModal);
+}
+
+// Brand modal functionality
+let currentBrandImages = [];
+let currentImageIndex = 0;
+
+function openBrandModal(brandName) {
+    // Define brand images
+    const brandImages = {
+        'acelabs': ['Brand/acelabs (1).jpg', 'Brand/acelabs (2).jpg'],
+        'adorn': ['Brand/adorn (1).jpg', 'Brand/adorn (2).jpg'],
+        'anchor': ['Brand/anchor (1).jpg', 'Brand/anchor (2).jpg'],
+        'bagsmart': ['Brand/bagsmart (1).jpg', 'Brand/bagsmart (2).jpg'],
+        'bamboo': ['Brand/bamboo (1).jpg', 'Brand/bamboo (2).jpg'],
+        'banish': ['Brand/banish (1).jpg', 'Brand/banish (2).jpg'],
+        'beads': ['Brand/beads (1).jpg', 'Brand/beads (2).jpg'],
+        'bio': ['Brand/bio (1).jpg', 'Brand/bio (2).jpg'],
+        'clean': ['Brand/clean (1).jpg', 'Brand/clean (2).jpg'],
+        'divas': ['Brand/divas (1).jpg', 'Brand/divas (2).jpg'],
+        'etihad': ['Brand/etihad (1).jpg', 'Brand/etihad (2).jpg'],
+        'elementbrooklyn': ['Brand/elementbrooklyn (1).jpg', 'Brand/elementbrooklyn (2).jpg'],
+        'goodapple': ['Brand/goodapple (1).jpg', 'Brand/goodapple (2).jpg'],
+        'hadalabo': ['Brand/hadalabo (1).jpg', 'Brand/hadalabo (2).jpg'],
+        'hundred': ['Brand/hundred (1).jpg', 'Brand/hundred (2).jpg'],
+        'lovethyoils': ['Brand/lovethyoils (1).jpg', 'Brand/lovethyoils (2).jpg'],
+        'lovito': ['Brand/lovito (1).jpg', 'Brand/lovito (2).jpg'],
+        'montigo': ['Brand/montigo (1).jpg', 'Brand/montigo (2).jpg'],
+        'mxp': ['Brand/mxp (1).jpg', 'Brand/mxp (2).jpg'],
+        'oxfordwhite': ['Brand/oxfordwhite (1).jpg', 'Brand/oxfordwhite (2).jpg'],
+        'print': ['Brand/print (1).jpg', 'Brand/print (2).jpg'],
+        'starkhaven': ['Brand/starkhaven (1).jpg', 'Brand/starkhaven (2).jpg'],
+        'styleupuk': ['Brand/styleupuk (1).jpg', 'Brand/styleupuk (2).jpg'],
+        'tippi': ['Brand/tippi (1).jpg', 'Brand/tippi (2).jpg'],
+        'zalora': ['Brand/zalora (1).webp', 'Brand/zalora (2).webp']
+    };
+    
+    currentBrandImages = brandImages[brandName] || [];
+    currentImageIndex = 0;
+    
+    if (currentBrandImages.length === 0) return;
+    
+    // Create brand modal
+    const brandModal = document.createElement('div');
+    brandModal.id = 'brandModal';
+    brandModal.className = 'fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50';
+    brandModal.innerHTML = `
+        <div class="relative max-w-4xl mx-4 flex items-center justify-center">
+            <button class="absolute -top-10 right-4 text-white text-3xl hover:text-gray-300 z-10 transition-colors duration-200" onclick="closeBrandModal()">&times;</button>
+            
+            <!-- Previous button -->
+            <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10 transition-colors duration-200 ${currentBrandImages.length <= 1 ? 'hidden' : ''}" onclick="previousBrandImage()">
+                &#8249;
+            </button>
+            
+            <!-- Image container -->
+            <div class="relative">
+                <img id="brandModalImage" src="${currentBrandImages[0]}" alt="Brand Shoot" class="max-w-full max-h-[90vh] w-auto h-auto rounded-lg shadow-2xl" style="object-fit: contain;">
+                
+                <!-- Image counter -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm ${currentBrandImages.length <= 1 ? 'hidden' : ''}">
+                    <span id="imageCounter">1</span> / ${currentBrandImages.length}
+                </div>
+            </div>
+            
+            <!-- Next button -->
+            <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10 transition-colors duration-200 ${currentBrandImages.length <= 1 ? 'hidden' : ''}" onclick="nextBrandImage()">
+                &#8250;
+            </button>
+        </div>
+    `;
+    
+    // Add click outside to close
+    brandModal.addEventListener('click', function(e) {
+        if (e.target === brandModal) {
+            closeBrandModal();
+        }
+    });
+    
+    // Add escape key to close
+    const handleEscape = function(e) {
+        if (e.key === 'Escape') {
+            closeBrandModal();
+        } else if (e.key === 'ArrowLeft') {
+            previousBrandImage();
+        } else if (e.key === 'ArrowRight') {
+            nextBrandImage();
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+    brandModal.setAttribute('data-escape-handler', 'true');
+    
+    document.body.appendChild(brandModal);
+}
+
+function closeBrandModal() {
+    const modal = document.getElementById('brandModal');
+    if (modal) {
+        // Remove escape key listener
+        const escapeHandlers = document.querySelectorAll('[data-escape-handler]');
+        escapeHandlers.forEach(() => {
+            document.removeEventListener('keydown', arguments.callee);
+        });
+        modal.remove();
+    }
+}
+
+function nextBrandImage() {
+    if (currentBrandImages.length <= 1) return;
+    
+    currentImageIndex = (currentImageIndex + 1) % currentBrandImages.length;
+    updateBrandModalImage();
+}
+
+function previousBrandImage() {
+    if (currentBrandImages.length <= 1) return;
+    
+    currentImageIndex = (currentImageIndex - 1 + currentBrandImages.length) % currentBrandImages.length;
+    updateBrandModalImage();
+}
+
+function updateBrandModalImage() {
+    const image = document.getElementById('brandModalImage');
+    const counter = document.getElementById('imageCounter');
+    
+    if (image && currentBrandImages[currentImageIndex]) {
+        image.src = currentBrandImages[currentImageIndex];
+        if (counter) {
+            counter.textContent = currentImageIndex + 1;
+        }
+    }
+}
+
+// Brand Pagination Functionality
+let currentBrandPage = 0;
+const brandsPerPage = 8;
+let totalBrandItems = 0;
+let maxPages = 0;
+
+function initBrandPagination() {
+    const brandItems = document.querySelectorAll('.brand-shoot-item');
+    totalBrandItems = brandItems.length;
+    maxPages = Math.ceil(totalBrandItems / brandsPerPage);
+    
+
+    
+    // Show first 8 items and hide the rest
+    brandItems.forEach((item, index) => {
+        if (index < brandsPerPage) {
+            item.classList.add('visible');
+        } else {
+            item.classList.remove('visible');
+            item.style.display = 'none';
+        }
+    });
+    
+    updateBrandPaginationButtons();
+}
+
+function showMoreBrands() {
+    if (currentBrandPage < maxPages - 1) {
+        currentBrandPage++;
+        const startIndex = currentBrandPage * brandsPerPage;
+        const endIndex = Math.min(startIndex + brandsPerPage, totalBrandItems);
+        
+        const brandItems = document.querySelectorAll('.brand-shoot-item');
+        for (let i = startIndex; i < endIndex; i++) {
+            if (brandItems[i]) {
+                brandItems[i].style.display = 'block';
+                brandItems[i].classList.add('visible');
+            }
+        }
+        
+        updateBrandPaginationButtons();
+    }
+}
+
+function showLessBrands() {
+    if (currentBrandPage > 0) {
+        const startIndex = currentBrandPage * brandsPerPage;
+        const endIndex = Math.min(startIndex + brandsPerPage, totalBrandItems);
+        
+        const brandItems = document.querySelectorAll('.brand-shoot-item');
+        for (let i = startIndex; i < endIndex; i++) {
+            if (brandItems[i]) {
+                brandItems[i].classList.remove('visible');
+                setTimeout(() => {
+                    brandItems[i].style.display = 'none';
+                }, 600); // Match the fade-in transition duration
+            }
+        }
+        
+        currentBrandPage--;
+        updateBrandPaginationButtons();
+    }
+}
+
+function updateBrandPaginationButtons() {
+    const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+    const viewLessBtn = document.getElementById('brandViewLessBtn');
+    
+    if (viewMoreBtn && viewLessBtn) {
+        // Show/hide View More button
+        if (currentBrandPage >= maxPages - 1) {
+            viewMoreBtn.style.display = 'none';
+        } else {
+            viewMoreBtn.style.display = 'inline-block';
+        }
+        
+        // Show/hide View Less button
+        if (currentBrandPage <= 0) {
+            viewLessBtn.style.display = 'none';
+        } else {
+            viewLessBtn.style.display = 'inline-block';
+        }
+    }
+}
+
+// Initialize brand pagination when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initBrandPagination();
+    
+    // Add event listeners to pagination buttons
+    const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+    const viewLessBtn = document.getElementById('brandViewLessBtn');
+    
+    if (viewMoreBtn) {
+        viewMoreBtn.addEventListener('click', showMoreBrands);
+    }
+    
+    if (viewLessBtn) {
+        viewLessBtn.addEventListener('click', showLessBrands);
+    }
+});   
+    </script>
+</body>
+</html>
