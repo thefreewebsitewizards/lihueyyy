@@ -3135,43 +3135,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });   
     </script>
 
-    <!-- Admin Interface (Enhanced with URL parameter access) -->
-    <div id="adminInterface" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-8 max-h-[90vh] overflow-y-auto">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-chart-line text-white text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-black mb-2" style="font-family: 'Monest', sans-serif;">Admin Panel</h2>
-                    <p class="text-stone-600" style="font-family: 'Josefin Sans', sans-serif;">Update Website Metrics & Statistics</p>
-                </div>
-                
-                <div class="space-y-6">
-                    <h4 class="text-xl font-semibold text-stone-800 border-b border-stone-200 pb-2 mb-6" style="font-family: 'Monest', sans-serif;">Instagram Metrics</h4>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-stone-700 mb-2">Instagram Followers</label>
-                        <input type="number" id="adminFollowers" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="14244">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-stone-700 mb-2">Engagement Rate (%)</label>
-                        <input type="number" id="adminEngagement" step="0.01" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="5.12">
-                    </div>
-                </div>
-                
-                <div class="flex gap-3 mt-8 pt-6 border-t border-stone-200">
-                    <button onclick="updateMetrics()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
-                        Update Instagram Metrics
-                    </button>
-                    <button onclick="closeAdmin()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
-                        Close Panel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Custom Alert Messages -->
     <div id="customAlert" class="fixed top-4 right-4 z-50 hidden">
@@ -3200,371 +3164,182 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 
-    <!-- Admin Access Button (Hidden, accessible via URL parameter ?admin=true) -->
-    <div id="adminAccess" class="fixed bottom-6 right-6 z-40 hidden">
-        <button onclick="showAdminLogin()" class="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-105 font-medium">
-            <i class="fas fa-edit mr-2"></i>Edit Stats
-        </button>
-    </div>
 
-    <!-- Password Prompt -->
-    <div id="passwordPrompt" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl font-bold text-black mb-2" style="font-family: 'The Seasons', serif;">Admin Access</h3>
-                    <p class="text-stone-600 text-sm" style="font-family: 'Josefin Sans', sans-serif;">Enter password to continue</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <input type="password" id="adminPassword" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="Password">
-                    
-                    <div class="flex gap-3">
-                        <button onclick="checkPassword()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
-                            Login
-                        </button>
-                        <button onclick="closePasswordPrompt()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="fixed top-4 right-4 bg-white rounded-lg shadow-2xl border border-gray-200 p-6 w-80 z-50 hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Admin Panel</h3>
+            <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-gray-700 transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="adminForm" class="space-y-4">
+            <div>
+                <label for="followerCount" class="block text-sm font-medium text-gray-700 mb-2">Instagram Followers</label>
+                <input type="number" id="followerCount" name="followerCount" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                       placeholder="Enter follower count">
             </div>
+            
+            <div>
+                <label for="engagementRate" class="block text-sm font-medium text-gray-700 mb-2">Engagement Rate (%)</label>
+                <input type="number" id="engagementRate" name="engagementRate" step="0.01" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                       placeholder="Enter engagement rate">
+            </div>
+            
+            <div class="flex space-x-3 pt-2">
+                <button type="submit" class="flex-1 bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-colors font-medium">
+                    Update
+                </button>
+                <button type="button" onclick="resetValues()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors font-medium">
+                    Reset
+                </button>
+            </div>
+        </form>
+        
+        <div id="adminMessage" class="mt-4 p-3 rounded-md hidden">
+            <p class="text-sm"></p>
         </div>
     </div>
 
-    <script>
-    // Instagram Metrics Management
-    const ADMIN_PASSWORD = 'lihuey2024'; // Change this to a secure password
-    
-    // BroadcastChannel for real-time synchronization across tabs (same browser only)
-    const metricsChannel = new BroadcastChannel('metrics-sync');
-    
-    // Listen for metrics updates from other tabs in the same browser
-    metricsChannel.addEventListener('message', function(event) {
-        if (event.data.type === 'metrics-update') {
-            // Update display without saving (already saved by sender)
-            updateFollowerDisplay(event.data.followers, false, false);
-            updateEngagementDisplay(event.data.engagement, false, false);
-            
-            // Show notification that metrics were updated from another tab
-            showCustomAlert('success', 'Metrics Synced', 'Metrics updated from another browser tab.');
-        }
-    });
-    
-    // Polling interval for cross-browser synchronization
-    let metricsPollingInterval;
-    let lastKnownUpdate = null;
-    
-    // Start polling for metrics updates from server
-    function startMetricsPolling() {
-        metricsPollingInterval = setInterval(async () => {
-            try {
-                const response = await fetch('/api/metrics');
-                const serverMetrics = await response.json();
-                
-                // Check if server data is newer than what we have
-                if (lastKnownUpdate && serverMetrics.lastUpdated !== lastKnownUpdate) {
-                    // Update display with server data
-                    updateFollowerDisplay(serverMetrics.instagramFollowers, false, false);
-                    updateEngagementDisplay(serverMetrics.instagramEngagement, false, false);
-                    
-                    // Update localStorage to keep local copy in sync
-                    localStorage.setItem('instagramFollowers', serverMetrics.instagramFollowers);
-                    localStorage.setItem('instagramEngagement', serverMetrics.instagramEngagement);
-                    
-                    // Show notification
-                    showCustomAlert('success', 'Metrics Updated', 'Metrics synchronized from another browser.');
-                }
-                
-                lastKnownUpdate = serverMetrics.lastUpdated;
-            } catch (error) {
-                console.log('Polling failed, using localStorage fallback:', error);
-            }
-        }, 3000); // Poll every 3 seconds
-    }
-    
-    // Stop polling
-    function stopMetricsPolling() {
-        if (metricsPollingInterval) {
-            clearInterval(metricsPollingInterval);
-        }
-    }
-    
-    // Check for admin access on page load
-    function checkAdminAccess() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === 'true') {
-            document.getElementById('adminAccess').classList.remove('hidden');
-        }
-    }
-    
-    // Load metrics from server first, fallback to localStorage
-    async function loadMetrics() {
-        try {
-            // Try to load from server first
-            const response = await fetch('/api/metrics');
-            const serverMetrics = await response.json();
-            
-            // Update display with server data
-            updateFollowerDisplay(serverMetrics.instagramFollowers, false, false);
-            updateEngagementDisplay(serverMetrics.instagramEngagement, false, false);
-            
-            // Update localStorage to keep local copy in sync
-            localStorage.setItem('instagramFollowers', serverMetrics.instagramFollowers);
-            localStorage.setItem('instagramEngagement', serverMetrics.instagramEngagement);
-            
-            lastKnownUpdate = serverMetrics.lastUpdated;
-            
-        } catch (error) {
-            console.log('Server unavailable, using localStorage fallback:', error);
-            
-            // Fallback to localStorage
-            const savedFollowers = localStorage.getItem('instagramFollowers');
-            const savedEngagement = localStorage.getItem('instagramEngagement');
-            
-            // Use default values if nothing is saved
-            const followers = savedFollowers || '14244';
-            const engagement = savedEngagement || '5.12';
-            
-            // Update display with local values
-            updateFollowerDisplay(followers, false, false);
-            updateEngagementDisplay(engagement, false, false);
-            
-            // Save defaults if they weren't already saved
-            if (!savedFollowers) {
-                localStorage.setItem('instagramFollowers', followers);
-            }
-            if (!savedEngagement) {
-                localStorage.setItem('instagramEngagement', engagement);
-            }
-        }
-    }
-    
-    // Update follower count display
-    function updateFollowerDisplay(count, shouldSave = true, shouldSaveToServer = true) {
-        // Target the specific div for Instagram Followers
-        const followerElements = document.querySelectorAll('.counter');
-        followerElements.forEach(element => {
-            const nextElement = element.nextElementSibling;
-            if (nextElement && nextElement.textContent.includes('Instagram Followers')) {
-                element.setAttribute('data-target', count);
-                element.textContent = parseInt(count).toLocaleString(); // Add comma formatting
-                
-                // Trigger counter animation if visible
-                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
-                    animateCounter(element, parseInt(count), false);
-                }
-            }
-        });
-        
-        // Save to localStorage if requested
-        if (shouldSave) {
-            localStorage.setItem('instagramFollowers', count);
-        }
-    }
-    
-    // Update engagement rate display
-    function updateEngagementDisplay(rate, shouldSave = true, shouldSaveToServer = true) {
-        // Target the specific div for Engagement Rate
-        const engagementElements = document.querySelectorAll('.counter[data-decimal="true"]');
-        engagementElements.forEach(element => {
-            const nextElement = element.nextElementSibling;
-            if (nextElement && nextElement.textContent.includes('Engagement Rate')) {
-                element.setAttribute('data-target', rate);
-                element.textContent = parseFloat(rate).toFixed(2) + '%';
-                
-                // Trigger counter animation if visible
-                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
-                    animateCounter(element, parseFloat(rate), true);
-                }
-            }
-        });
-        
-        // Save to localStorage if requested
-        if (shouldSave) {
-            localStorage.setItem('instagramEngagement', rate);
-        }
-    }
-    
-    // Custom Alert Functions
-    function showCustomAlert(type, title, message) {
-        const alertElement = document.getElementById('customAlert');
-        const alertContent = document.getElementById('alertContent');
-        const alertTitle = document.getElementById('alertTitle');
-        const alertMessage = document.getElementById('alertMessage');
-        const successIcon = document.getElementById('successIcon');
-        const errorIcon = document.getElementById('errorIcon');
-        
-        // Reset icons
-        successIcon.classList.add('hidden');
-        errorIcon.classList.add('hidden');
-        
-        // Set content
-        alertTitle.textContent = title;
-        alertMessage.textContent = message;
-        
-        // Set type-specific styling
-        if (type === 'success') {
-            successIcon.classList.remove('hidden');
-            alertContent.classList.remove('border-red-500');
-            alertContent.classList.add('border-green-500');
-        } else if (type === 'error') {
-            errorIcon.classList.remove('hidden');
-            alertContent.classList.remove('border-green-500');
-            alertContent.classList.add('border-red-500');
-        }
-        
-        // Show alert with animation
-        alertElement.classList.remove('hidden');
-        setTimeout(() => {
-            alertElement.style.transform = 'translateX(0)';
-            alertElement.style.opacity = '1';
-        }, 10);
-        
-        // Auto-hide after 4 seconds
-        setTimeout(() => {
-            hideCustomAlert();
-        }, 4000);
-    }
-    
-    function hideCustomAlert() {
-        const alertElement = document.getElementById('customAlert');
-        alertElement.style.transform = 'translateX(100%)';
-        alertElement.style.opacity = '0';
-        
-        setTimeout(() => {
-            alertElement.classList.add('hidden');
-        }, 300);
-    }
+    <!-- Admin Panel Toggle Button (Hidden from users) -->
+    <button id="adminToggle" onclick="toggleAdminPanel()" 
+            class="fixed bottom-4 right-4 bg-pink-500 text-white p-3 rounded-full shadow-lg hover:bg-pink-600 transition-colors z-40 hidden">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+        </svg>
+    </button>
 
-    // Show admin login prompt
-    function showAdminLogin() {
-        document.getElementById('passwordPrompt').classList.remove('hidden');
-        document.getElementById('adminPassword').focus();
-    }
-    
-    // Close password prompt
-    function closePasswordPrompt() {
-        document.getElementById('passwordPrompt').classList.add('hidden');
-        document.getElementById('adminPassword').value = '';
-    }
-    
-    // Check password and show admin interface
-    function checkPassword() {
-        const password = document.getElementById('adminPassword').value;
-        if (password === ADMIN_PASSWORD) {
-            closePasswordPrompt();
-            showAdminInterface();
-        } else {
-            showCustomAlert('error', 'Access Denied', 'Incorrect password. Please try again.');
-            document.getElementById('adminPassword').value = '';
-        }
-    }
-    
-    // Show admin interface
-    async function showAdminInterface() {
-        // Load current values from server first, fallback to localStorage
-        try {
-            const response = await fetch('/api/metrics');
-            if (response.ok) {
-                const data = await response.json();
-                document.getElementById('adminFollowers').value = data.instagramFollowers || '14244';
-                document.getElementById('adminEngagement').value = data.instagramEngagement || '5.12';
+    <script>
+        // Admin Panel Functionality
+        let isAdminPanelOpen = false;
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            isAdminPanelOpen = !isAdminPanelOpen;
+            
+            if (isAdminPanelOpen) {
+                panel.classList.remove('hidden');
+                loadCurrentValues();
             } else {
-                throw new Error('Server not available');
+                panel.classList.add('hidden');
             }
-        } catch (error) {
-            console.log('Loading from localStorage as fallback');
-            const currentFollowers = localStorage.getItem('instagramFollowers') || '14244';
-            const currentEngagement = localStorage.getItem('instagramEngagement') || '5.12';
-            document.getElementById('adminFollowers').value = currentFollowers;
-            document.getElementById('adminEngagement').value = currentEngagement;
         }
-        
-        document.getElementById('adminInterface').classList.remove('hidden');
-    }
-    
-    // Close admin interface
-    function closeAdmin() {
-        document.getElementById('adminInterface').classList.add('hidden');
-    }
-    
-    // Update Instagram metrics
-    async function updateMetrics() {
-        const followers = document.getElementById('adminFollowers').value;
-        const engagement = document.getElementById('adminEngagement').value;
-        
-        if (followers && engagement) {
-            // Validate input
-            if (isNaN(followers) || isNaN(engagement) || followers < 0 || engagement < 0) {
-                showCustomAlert('error', 'Invalid Input', 'Please enter valid positive numbers for both fields.');
+
+        function loadCurrentValues() {
+            // Load saved values from localStorage or use current displayed values
+            const savedFollowers = localStorage.getItem('instagramFollowers');
+            const savedEngagement = localStorage.getItem('engagementRate');
+            
+            if (savedFollowers) {
+                document.getElementById('followerCount').value = savedFollowers;
+            } else {
+                // Get current value from the counter element
+                const currentFollowers = document.querySelector('[data-target="14244"]').textContent;
+                document.getElementById('followerCount').value = currentFollowers.replace(/,/g, '');
+            }
+            
+            if (savedEngagement) {
+                document.getElementById('engagementRate').value = savedEngagement;
+            } else {
+                // Get current value from the counter element
+                const currentEngagement = document.querySelector('[data-target="5.12"]').textContent;
+                document.getElementById('engagementRate').value = currentEngagement;
+            }
+        }
+
+        function updateInstagramMetrics(followers, engagement) {
+            // Update the counter elements
+            const followersElement = document.querySelector('[data-target="14244"]');
+            const engagementElement = document.querySelector('[data-target="5.12"]');
+            
+            if (followersElement) {
+                followersElement.setAttribute('data-target', followers);
+                followersElement.textContent = parseInt(followers).toLocaleString();
+            }
+            
+            if (engagementElement) {
+                engagementElement.setAttribute('data-target', engagement);
+                engagementElement.textContent = parseFloat(engagement).toFixed(2);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('instagramFollowers', followers);
+            localStorage.setItem('engagementRate', engagement);
+        }
+
+        function showAdminMessage(message, type = 'success') {
+            const messageDiv = document.getElementById('adminMessage');
+            const messageText = messageDiv.querySelector('p');
+            
+            messageDiv.className = `mt-4 p-3 rounded-md ${type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+            messageText.textContent = message;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        function resetValues() {
+            // Reset to original values
+            document.getElementById('followerCount').value = '14244';
+            document.getElementById('engagementRate').value = '5.12';
+            
+            updateInstagramMetrics('14244', '5.12');
+            
+            // Clear localStorage
+            localStorage.removeItem('instagramFollowers');
+            localStorage.removeItem('engagementRate');
+            
+            showAdminMessage('Values reset to original!');
+        }
+
+        // Handle form submission
+        document.getElementById('adminForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const followers = document.getElementById('followerCount').value;
+            const engagement = document.getElementById('engagementRate').value;
+            
+            if (!followers || !engagement) {
+                showAdminMessage('Please fill in both fields!', 'error');
                 return;
             }
             
-            // Save to server first
-            try {
-                const response = await fetch('/api/metrics', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        instagramFollowers: parseInt(followers),
-                        instagramEngagement: parseFloat(engagement)
-                    })
-                });
-                
-                if (response.ok) {
-                    console.log('Metrics saved to server successfully');
-                } else {
-                    throw new Error('Server save failed');
-                }
-            } catch (error) {
-                console.log('Server save failed, saving to localStorage only:', error);
+            if (followers < 0 || engagement < 0) {
+                showAdminMessage('Values must be positive!', 'error');
+                return;
             }
             
-            // Update display and localStorage
-            updateFollowerDisplay(followers, true, false);
-            updateEngagementDisplay(engagement, true, false);
-            
-            // Broadcast the update to other tabs in same browser
-            metricsChannel.postMessage({
-                type: 'metrics-update',
-                followers: followers,
-                engagement: engagement
-            });
-            
-            // Close admin interface
-            closeAdmin();
-            
-            // Show success message
-            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully and will sync across all browsers.');
-        } else {
-            showCustomAlert('error', 'Missing Information', 'Please fill in both Instagram followers and engagement rate fields.');
-        }
-    }
-    
-    // Keyboard shortcut to access admin (Ctrl+Shift+A)
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-            e.preventDefault();
-            showAdminLogin();
-        }
-    });
-    
-    // Handle Enter key in password field
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && document.getElementById('passwordPrompt').classList.contains('hidden') === false) {
-            checkPassword();
-        }
-    });
-    
-    // Load metrics and check admin access when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        loadMetrics();
-        checkAdminAccess();
-        startMetricsPolling(); // Start polling for cross-browser updates
-    });
+            updateInstagramMetrics(followers, engagement);
+            showAdminMessage('Instagram metrics updated successfully!');
+        });
+
+        // Load saved values on page load
+         document.addEventListener('DOMContentLoaded', function() {
+             const savedFollowers = localStorage.getItem('instagramFollowers');
+             const savedEngagement = localStorage.getItem('engagementRate');
+             
+             if (savedFollowers && savedEngagement) {
+                 updateInstagramMetrics(savedFollowers, savedEngagement);
+             }
+         });
+
+         // Secret keyboard shortcut to access admin panel (Ctrl+Shift+A)
+         document.addEventListener('keydown', function(e) {
+             if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                 e.preventDefault();
+                 const toggleButton = document.getElementById('adminToggle');
+                 toggleButton.classList.remove('hidden');
+                 toggleAdminPanel();
+             }
+         });
     </script>
 </body>
 </html>
