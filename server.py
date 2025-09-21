@@ -4,6 +4,33 @@ import os
 import json
 import urllib.parse
 
+# Hybrid storage: in-memory with file backup for true persistence
+def load_stats():
+    """Load stats from file if exists, otherwise use defaults"""
+    default_stats = {
+        "instagram_followers": int(os.environ.get('INSTAGRAM_FOLLOWERS', 14244)),
+        "engagement_rate": float(os.environ.get('ENGAGEMENT_RATE', 5.12))
+    }
+    
+    try:
+        with open('data.json', 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Create the file with default data
+        save_stats(default_stats)
+        return default_stats
+
+def save_stats(data):
+    """Save stats to file for persistence"""
+    try:
+        with open('data.json', 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"Warning: Could not save to file: {e}")
+
+# Initialize stats from file or defaults
+stats_data = load_stats()
+
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
@@ -20,25 +47,10 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
         if self.path == '/api/stats':
-            try:
-                with open('data.json', 'r') as f:
-                    data = json.load(f)
-                self.send_response(200)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps(data).encode())
-            except FileNotFoundError:
-                # Create default data file if it doesn't exist
-                default_data = {
-                    "instagram_followers": 14244,
-                    "engagement_rate": 5.12
-                }
-                with open('data.json', 'w') as f:
-                    json.dump(default_data, f, indent=2)
-                self.send_response(200)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps(default_data).encode())
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(stats_data).encode())
         else:
             super().do_GET()
     
@@ -48,8 +60,10 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             try:
                 data = json.loads(post_data.decode())
-                with open('data.json', 'w') as f:
-                    json.dump(data, f, indent=2)
+                # Update in-memory storage
+                stats_data.update(data)
+                # Save to file for persistence
+                save_stats(stats_data)
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()

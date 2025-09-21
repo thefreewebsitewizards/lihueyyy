@@ -3225,38 +3225,49 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (isAdminPanelOpen) {
                 panel.classList.remove('hidden');
-                loadCurrentValues();
+                loadCurrentValues(); // This is now async but we don't need to await it here
             } else {
                 panel.classList.add('hidden');
             }
         }
 
-        function loadCurrentValues() {
-            // Load saved values from localStorage or use current displayed values
-            const savedFollowers = localStorage.getItem('instagramFollowers');
-            const savedEngagement = localStorage.getItem('engagementRate');
-            
-            if (savedFollowers) {
-                document.getElementById('followerCount').value = savedFollowers;
-            } else {
-                // Get current value from the counter element
-                const currentFollowers = document.querySelector('[data-target="14244"]').textContent;
-                document.getElementById('followerCount').value = currentFollowers.replace(/,/g, '');
-            }
-            
-            if (savedEngagement) {
-                document.getElementById('engagementRate').value = savedEngagement;
-            } else {
-                // Get current value from the counter element
-                const currentEngagement = document.querySelector('[data-target="5.12"]').textContent;
-                document.getElementById('engagementRate').value = currentEngagement;
+        async function loadCurrentValues() {
+            // Load saved values from server to ensure admin form shows actual saved data
+            try {
+                const response = await fetch('/api/stats');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('followerCount').value = data.instagram_followers;
+                    document.getElementById('engagementRate').value = data.engagement_rate;
+                } else {
+                    // Fallback to current displayed values if server request fails
+                    const followersElement = document.querySelector('.counter[data-target]');
+                    const engagementElement = document.querySelector('.counter[data-decimal="true"]');
+                    if (followersElement) {
+                        document.getElementById('followerCount').value = followersElement.textContent.replace(/,/g, '');
+                    }
+                    if (engagementElement) {
+                        document.getElementById('engagementRate').value = engagementElement.textContent;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading current values:', error);
+                // Fallback to current displayed values if there's an error
+                const followersElement = document.querySelector('.counter[data-target]');
+                const engagementElement = document.querySelector('.counter[data-decimal="true"]');
+                if (followersElement) {
+                    document.getElementById('followerCount').value = followersElement.textContent.replace(/,/g, '');
+                }
+                if (engagementElement) {
+                    document.getElementById('engagementRate').value = engagementElement.textContent;
+                }
             }
         }
 
         function updateInstagramMetrics(followers, engagement) {
-            // Update the counter elements
-            const followersElement = document.querySelector('[data-target="14244"]');
-            const engagementElement = document.querySelector('[data-target="5.12"]');
+            // Update the counter elements - use dynamic selectors based on current values
+            const followersElement = document.querySelector('.counter[data-target]');
+            const engagementElement = document.querySelector('.counter[data-decimal="true"]');
             
             if (followersElement) {
                 followersElement.setAttribute('data-target', followers);
