@@ -38,11 +38,11 @@ class MetricsHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(metrics).encode())
         except FileNotFoundError:
-            print("metrics.json not found, returning defaults")  # Debug logging
-            # Return default values if file doesn't exist
+            print("metrics.json not found, returning defaults from env vars or hardcoded")  # Debug logging
+            # Get values from environment variables or use defaults
             default_metrics = {
-                "instagramFollowers": "14244",
-                "instagramEngagement": "5.12",
+                "instagramFollowers": os.environ.get('INSTAGRAM_FOLLOWERS', "14415"),
+                "instagramEngagement": os.environ.get('INSTAGRAM_ENGAGEMENT', "5.12"),
                 "lastUpdated": datetime.now().isoformat()
             }
             self.send_response(200)
