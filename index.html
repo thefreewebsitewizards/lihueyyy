@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Li Huey | Digital Creator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -3387,19 +3390,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Save to localStorage
+            // Save to localStorage with timestamp to force refresh
+            const timestamp = Date.now();
             localStorage.setItem('instagramFollowers', followers);
             localStorage.setItem('instagramEngagement', engagement);
+            localStorage.setItem('metricsLastUpdated', timestamp);
             
             // Update display
             updateFollowerDisplay(followers);
             updateEngagementDisplay(engagement);
             
+            // Force page refresh to ensure changes are visible across all devices
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000);
+            
             // Close admin interface
             closeAdmin();
             
             // Show success message
-            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully.');
+            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully. Page will refresh to ensure changes are visible on all devices.');
         } else {
             showCustomAlert('error', 'Missing Information', 'Please fill in both Instagram followers and engagement rate fields.');
         }
