@@ -91,5 +91,5 @@ class MetricsHandler(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     PORT = int(os.environ.get('PORT', 8000))
     with socketserver.TCPServer(("", PORT), MetricsHandler) as httpd:
-        print(f"Server running at http://localhost:{PORT}")
+        print(f"Server running at https://lihueyyy.onrender.com/")
         httpd.serve_forever()
