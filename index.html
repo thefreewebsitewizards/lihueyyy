@@ -3236,6 +3236,60 @@ document.addEventListener('DOMContentLoaded', function() {
     // Instagram Metrics Management
     const ADMIN_PASSWORD = 'lihuey2024'; // Change this to a secure password
     
+    // BroadcastChannel for real-time synchronization across tabs (same browser only)
+    const metricsChannel = new BroadcastChannel('metrics-sync');
+    
+    // Listen for metrics updates from other tabs in the same browser
+    metricsChannel.addEventListener('message', function(event) {
+        if (event.data.type === 'metrics-update') {
+            // Update display without saving (already saved by sender)
+            updateFollowerDisplay(event.data.followers, false, false);
+            updateEngagementDisplay(event.data.engagement, false, false);
+            
+            // Show notification that metrics were updated from another tab
+            showCustomAlert('success', 'Metrics Synced', 'Metrics updated from another browser tab.');
+        }
+    });
+    
+    // Polling interval for cross-browser synchronization
+    let metricsPollingInterval;
+    let lastKnownUpdate = null;
+    
+    // Start polling for metrics updates from server
+    function startMetricsPolling() {
+        metricsPollingInterval = setInterval(async () => {
+            try {
+                const response = await fetch('/api/metrics');
+                const serverMetrics = await response.json();
+                
+                // Check if server data is newer than what we have
+                if (lastKnownUpdate && serverMetrics.lastUpdated !== lastKnownUpdate) {
+                    // Update display with server data
+                    updateFollowerDisplay(serverMetrics.instagramFollowers, false, false);
+                    updateEngagementDisplay(serverMetrics.instagramEngagement, false, false);
+                    
+                    // Update localStorage to keep local copy in sync
+                    localStorage.setItem('instagramFollowers', serverMetrics.instagramFollowers);
+                    localStorage.setItem('instagramEngagement', serverMetrics.instagramEngagement);
+                    
+                    // Show notification
+                    showCustomAlert('success', 'Metrics Updated', 'Metrics synchronized from another browser.');
+                }
+                
+                lastKnownUpdate = serverMetrics.lastUpdated;
+            } catch (error) {
+                console.log('Polling failed, using localStorage fallback:', error);
+            }
+        }, 3000); // Poll every 3 seconds
+    }
+    
+    // Stop polling
+    function stopMetricsPolling() {
+        if (metricsPollingInterval) {
+            clearInterval(metricsPollingInterval);
+        }
+    }
+    
     // Check for admin access on page load
     function checkAdminAccess() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -3244,22 +3298,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Load saved metrics from localStorage
-    function loadMetrics() {
-        const savedFollowers = localStorage.getItem('instagramFollowers');
-        const savedEngagement = localStorage.getItem('instagramEngagement');
-        
-        if (savedFollowers) {
-            updateFollowerDisplay(savedFollowers);
-        }
-        
-        if (savedEngagement) {
-            updateEngagementDisplay(savedEngagement);
+    // Load metrics from server first, fallback to localStorage
+    async function loadMetrics() {
+        try {
+            // Try to load from server first
+            const response = await fetch('/api/metrics');
+            const serverMetrics = await response.json();
+            
+            // Update display with server data
+            updateFollowerDisplay(serverMetrics.instagramFollowers, false, false);
+            updateEngagementDisplay(serverMetrics.instagramEngagement, false, false);
+            
+            // Update localStorage to keep local copy in sync
+            localStorage.setItem('instagramFollowers', serverMetrics.instagramFollowers);
+            localStorage.setItem('instagramEngagement', serverMetrics.instagramEngagement);
+            
+            lastKnownUpdate = serverMetrics.lastUpdated;
+            
+        } catch (error) {
+            console.log('Server unavailable, using localStorage fallback:', error);
+            
+            // Fallback to localStorage
+            const savedFollowers = localStorage.getItem('instagramFollowers');
+            const savedEngagement = localStorage.getItem('instagramEngagement');
+            
+            // Use default values if nothing is saved
+            const followers = savedFollowers || '14244';
+            const engagement = savedEngagement || '5.12';
+            
+            // Update display with local values
+            updateFollowerDisplay(followers, false, false);
+            updateEngagementDisplay(engagement, false, false);
+            
+            // Save defaults if they weren't already saved
+            if (!savedFollowers) {
+                localStorage.setItem('instagramFollowers', followers);
+            }
+            if (!savedEngagement) {
+                localStorage.setItem('instagramEngagement', engagement);
+            }
         }
     }
     
     // Update follower count display
-    function updateFollowerDisplay(count) {
+    function updateFollowerDisplay(count, shouldSave = true, shouldSaveToServer = true) {
         // Target the specific div for Instagram Followers
         const followerElements = document.querySelectorAll('.counter');
         followerElements.forEach(element => {
@@ -3274,10 +3356,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+        
+        // Save to localStorage if requested
+        if (shouldSave) {
+            localStorage.setItem('instagramFollowers', count);
+        }
     }
     
     // Update engagement rate display
-    function updateEngagementDisplay(rate) {
+    function updateEngagementDisplay(rate, shouldSave = true, shouldSaveToServer = true) {
         // Target the specific div for Engagement Rate
         const engagementElements = document.querySelectorAll('.counter[data-decimal="true"]');
         engagementElements.forEach(element => {
@@ -3292,6 +3379,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+        
+        // Save to localStorage if requested
+        if (shouldSave) {
+            localStorage.setItem('instagramEngagement', rate);
+        }
     }
     
     // Custom Alert Functions
@@ -3370,13 +3462,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Show admin interface
-    function showAdminInterface() {
-        // Load current values
-        const currentFollowers = localStorage.getItem('instagramFollowers') || '14244';
-        const currentEngagement = localStorage.getItem('instagramEngagement') || '5.12';
+    async function showAdminInterface() {
+        // Load current values from server first, fallback to localStorage
+        try {
+            const response = await fetch('/api/metrics');
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('adminFollowers').value = data.instagramFollowers || '14244';
+                document.getElementById('adminEngagement').value = data.instagramEngagement || '5.12';
+            } else {
+                throw new Error('Server not available');
+            }
+        } catch (error) {
+            console.log('Loading from localStorage as fallback');
+            const currentFollowers = localStorage.getItem('instagramFollowers') || '14244';
+            const currentEngagement = localStorage.getItem('instagramEngagement') || '5.12';
+            document.getElementById('adminFollowers').value = currentFollowers;
+            document.getElementById('adminEngagement').value = currentEngagement;
+        }
         
-        document.getElementById('adminFollowers').value = currentFollowers;
-        document.getElementById('adminEngagement').value = currentEngagement;
         document.getElementById('adminInterface').classList.remove('hidden');
     }
     
@@ -3386,7 +3490,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Update Instagram metrics
-    function updateMetrics() {
+    async function updateMetrics() {
         const followers = document.getElementById('adminFollowers').value;
         const engagement = document.getElementById('adminEngagement').value;
         
@@ -3397,19 +3501,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Save to localStorage
-            localStorage.setItem('instagramFollowers', followers);
-            localStorage.setItem('instagramEngagement', engagement);
+            // Save to server first
+            try {
+                const response = await fetch('/api/metrics', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        instagramFollowers: parseInt(followers),
+                        instagramEngagement: parseFloat(engagement)
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('Metrics saved to server successfully');
+                } else {
+                    throw new Error('Server save failed');
+                }
+            } catch (error) {
+                console.log('Server save failed, saving to localStorage only:', error);
+            }
             
-            // Update display immediately
-            updateFollowerDisplay(followers);
-            updateEngagementDisplay(engagement);
+            // Update display and localStorage
+            updateFollowerDisplay(followers, true, false);
+            updateEngagementDisplay(engagement, true, false);
+            
+            // Broadcast the update to other tabs in same browser
+            metricsChannel.postMessage({
+                type: 'metrics-update',
+                followers: followers,
+                engagement: engagement
+            });
             
             // Close admin interface
             closeAdmin();
             
             // Show success message
-            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully.');
+            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully and will sync across all browsers.');
         } else {
             showCustomAlert('error', 'Missing Information', 'Please fill in both Instagram followers and engagement rate fields.');
         }
@@ -3434,6 +3563,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', function() {
         loadMetrics();
         checkAdminAccess();
+        startMetricsPolling(); // Start polling for cross-browser updates
     });
     </script>
 </body>
