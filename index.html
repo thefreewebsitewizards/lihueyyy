@@ -3135,16 +3135,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });   
     </script>
 
-    <!-- Admin Interface (Hidden by default) -->
+    <!-- Admin Interface (Enhanced with URL parameter access) -->
     <div id="adminInterface" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl font-bold text-black mb-2" style="font-family: 'The Seasons', serif;">Admin Panel</h2>
-                    <p class="text-stone-600" style="font-family: 'Josefin Sans', sans-serif;">Update Instagram Metrics</p>
+            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-8 max-h-[90vh] overflow-y-auto">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-black mb-2" style="font-family: 'Monest', sans-serif;">Admin Panel</h2>
+                    <p class="text-stone-600" style="font-family: 'Josefin Sans', sans-serif;">Update Website Metrics & Statistics</p>
                 </div>
                 
                 <div class="space-y-6">
+                    <h4 class="text-xl font-semibold text-stone-800 border-b border-stone-200 pb-2 mb-6" style="font-family: 'Monest', sans-serif;">Instagram Metrics</h4>
+                    
                     <div>
                         <label class="block text-sm font-medium text-stone-700 mb-2">Instagram Followers</label>
                         <input type="number" id="adminFollowers" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="14244">
@@ -3154,15 +3159,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <label class="block text-sm font-medium text-stone-700 mb-2">Engagement Rate (%)</label>
                         <input type="number" id="adminEngagement" step="0.01" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="5.12">
                     </div>
-                    
-                    <div class="flex gap-3 pt-4">
-                        <button onclick="updateMetrics()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
-                            Update
-                        </button>
-                        <button onclick="closeAdmin()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
-                            Cancel
-                        </button>
-                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-8 pt-6 border-t border-stone-200">
+                    <button onclick="updateMetrics()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
+                        Update Instagram Metrics
+                    </button>
+                    <button onclick="closeAdmin()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
+                        Close Panel
+                    </button>
                 </div>
             </div>
         </div>
@@ -3195,13 +3200,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 
-    <!-- Admin Access Button (Hidden, accessible via keyboard shortcut) -->
-    <div id="adminAccess" class="fixed bottom-4 right-4 opacity-0 pointer-events-none">
-        <button onclick="showAdminLogin()" class="bg-stone-800 text-white p-3 rounded-full shadow-lg hover:bg-stone-900 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
+    <!-- Admin Access Button (Hidden, accessible via URL parameter ?admin=true) -->
+    <div id="adminAccess" class="fixed bottom-6 right-6 z-40 hidden">
+        <button onclick="showAdminLogin()" class="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-105 font-medium">
+            <i class="fas fa-edit mr-2"></i>Edit Stats
         </button>
     </div>
 
@@ -3234,37 +3236,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Instagram Metrics Management
     const ADMIN_PASSWORD = 'lihuey2024'; // Change this to a secure password
     
+    // Check for admin access on page load
+    function checkAdminAccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') {
+            document.getElementById('adminAccess').classList.remove('hidden');
+        }
+    }
+    
     // Load saved metrics from localStorage
     function loadMetrics() {
         const savedFollowers = localStorage.getItem('instagramFollowers');
         const savedEngagement = localStorage.getItem('instagramEngagement');
         
-        // Set default values if no saved metrics exist
-        const defaultFollowers = savedFollowers || '14244';
-        const defaultEngagement = savedEngagement || '5.12';
+        if (savedFollowers) {
+            updateFollowerDisplay(savedFollowers);
+        }
         
-        // Always update display with current values (saved or default)
-        updateFollowerDisplay(defaultFollowers);
-        updateEngagementDisplay(defaultEngagement);
-        
-        // Update the data-target attributes in the HTML for counter animation
-        const followerElements = document.querySelectorAll('.counter');
-        followerElements.forEach(element => {
-            const nextElement = element.nextElementSibling;
-            if (nextElement && nextElement.textContent.includes('Instagram Followers')) {
-                element.setAttribute('data-target', defaultFollowers);
-                element.textContent = '0'; // Reset for animation
-            }
-        });
-        
-        const engagementElements = document.querySelectorAll('.counter[data-decimal="true"]');
-        engagementElements.forEach(element => {
-            const nextElement = element.nextElementSibling;
-            if (nextElement && nextElement.textContent.includes('Engagement Rate')) {
-                element.setAttribute('data-target', defaultEngagement);
-                element.textContent = '0'; // Reset for animation
-            }
-        });
+        if (savedEngagement) {
+            updateEngagementDisplay(savedEngagement);
+        }
     }
     
     // Update follower count display
@@ -3275,8 +3266,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextElement = element.nextElementSibling;
             if (nextElement && nextElement.textContent.includes('Instagram Followers')) {
                 element.setAttribute('data-target', count);
-                // Immediately show the value without animation for persistent display
                 element.textContent = parseInt(count).toLocaleString(); // Add comma formatting
+                
+                // Trigger counter animation if visible
+                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
+                    animateCounter(element, parseInt(count), false);
+                }
             }
         });
     }
@@ -3289,8 +3284,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextElement = element.nextElementSibling;
             if (nextElement && nextElement.textContent.includes('Engagement Rate')) {
                 element.setAttribute('data-target', rate);
-                // Immediately show the value without animation for persistent display
                 element.textContent = parseFloat(rate).toFixed(2) + '%';
+                
+                // Trigger counter animation if visible
+                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
+                    animateCounter(element, parseFloat(rate), true);
+                }
             }
         });
     }
@@ -3386,7 +3385,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('adminInterface').classList.add('hidden');
     }
     
-    // Update metrics
+    // Update Instagram metrics
     function updateMetrics() {
         const followers = document.getElementById('adminFollowers').value;
         const engagement = document.getElementById('adminEngagement').value;
@@ -3402,7 +3401,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('instagramFollowers', followers);
             localStorage.setItem('instagramEngagement', engagement);
             
-            // Update display
+            // Update display immediately
             updateFollowerDisplay(followers);
             updateEngagementDisplay(engagement);
             
@@ -3431,15 +3430,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Load metrics when page loads
+    // Load metrics and check admin access when page loads
     document.addEventListener('DOMContentLoaded', function() {
-        // Load metrics first to ensure they're available immediately
         loadMetrics();
-        
-        // Small delay to ensure DOM is fully ready, then load metrics again to override any default animations
-        setTimeout(() => {
-            loadMetrics();
-        }, 100);
+        checkAdminAccess();
     });
     </script>
 </body>
