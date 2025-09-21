@@ -733,7 +733,7 @@
     <!-- Mobile layout without background -->
     <section id="home" class="lg:hidden min-h-screen bg-slideshow bg-cover bg-[right_44%_center] bg-no-repeat flex flex-col justify-between py-8 sm:py-12 md:py-20 px-4 sm:px-6 md:px-8 relative">
         <!-- Semi-transparent overlay for text readability -->
-        <div class="absolute inset-0 bg-white bg-opacity-95" style="z-index: 2;"></div>
+        <div class="absolute inset-0 bg-white bg-opacity-70" style="z-index: 2;"></div>
         
         <div class="flex-1 flex items-center justify-center">
             <div class="text-center w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto px-2 sm:px-4 relative z-10">
@@ -742,7 +742,7 @@
                     <span id="looping-words-mobile"></span><br>
                 </h1>
                 <p class="text-lg sm:text-xl md:text-2xl text-stone-700 leading-relaxed px-2 sm:px-0" style="font-family: 'Josefin Sans', sans-serif;">
-                    A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
+                    <span class="text-pink-500 font-semibold">Turning everyday moments into extraordinary stories,</span> I’m an Adelaide-based creator where style meets authenticity, crafting content that <em class="text-stone-800 font-medium">truly matters</em>.
                   </p>
             </div>
         </div>
@@ -780,7 +780,7 @@
                        
                     </h1>
                     <p class="text-base sm:text-lg text-stone-700 mb-0 max-w-md mx-auto lg:mx-0" style="font-family: 'Josefin Sans', sans-serif;">
-                        A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
+                        <span class="text-pink-500 font-semibold">Turning everyday moments into extraordinary stories,</span> I’m an Adelaide-based creator where style meets authenticity, crafting content that <em class="text-stone-800 font-medium">truly matters</em>.
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 mt-12 lg:mt-24 justify-center lg:justify-start">
@@ -982,8 +982,63 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center fade-in">
+                <h2 class=" text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Contact</h2>
+                <p class="text-xl mb-8 text-stone-700" style="font-family: 'The Seasons', serif;">Get in touch for collaboration inquiries and business opportunities.</p>
+                
+                <!-- Contact Info -->
+                <div class="mb-8">
+                    <a href="mailto:lihueyyy@gmail.com" class="inline-flex items-center text-2xl text-stone-700 hover:text-pink-400 transition-colors duration-300 mb-4">
+                        <i class="fas fa-envelope mr-3"></i>
+                        lihueyyy@gmail.com
+                    </a>
+                </div>
+                
+                <div class="bg-stone-50 rounded-xl p-8 max-w-2xl mx-auto fade-in hover-scale border-b-2 border-pink-300 rounded-lg p-4">
+                    <h3 class="font-monest text-2xl mb-6 text-black" style="font-family: 'The Seasons', serif;">Collaboration Inquiry Form</h3>
+                    
+                    <form class="space-y-4" style="font-family: 'Josefin Sans', sans-serif;" action="mailto:lihueyyy@gmail.com" method="post" enctype="text/plain">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="collab-name" class="block text-left mb-1">Name</label>
+                                <input type="text" id="collab-name" name="name" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
+                            </div>
+                            <div>
+                                <label for="collab-email" class="block text-left mb-1">Email</label>
+                                <input type="email" id="collab-email" name="email" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="collab-company" class="block text-left mb-1">Company/Brand</label>
+                            <input type="text" id="collab-company" name="company" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
+                        </div>
+                        <div>
+                            <label for="collab-type" class="block text-left mb-1">Collaboration Type</label>
+                            <select id="collab-type" name="collaboration-type" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
+                                <option value="">Select collaboration type</option>
+                                <option value="brand-partnership">Brand Partnership</option>
+                                <option value="sponsored-content">Sponsored Content</option>
+                                <option value="product-review">Product Review</option>
+                                <option value="event-coverage">Event Coverage</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="collab-message" class="block text-left mb-1">Message</label>
+                            <textarea id="collab-message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" placeholder="Please describe your collaboration proposal..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-hover bg-gradient-to-r from-pink-400 to-stone-600 text-white px-8 py-3 rounded-full font-medium hover:from-pink-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Portfolio Section -->
-    <section id="portfolio" class="py-20 bg-white">
+    <section id="portfolio" class="py-20 bg-stone-50>
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 fade-in">
                 <h2 class="text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Partnerships</h2>
@@ -1835,7 +1890,7 @@
         </script>
 
     <!-- Brand Shoots Section -->
-    <section id="brand-shoot" class="py-20 bg-stone-50">
+    <section id="brand-shoot" class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 fade-in">
                 <h2 class="text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Brand Shoots</h2>
@@ -2182,8 +2237,6 @@
         </div>
     </section>
 
-
-
     <section id="socials" class="pt-12 pb-8 bg-gray-50">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12 fade-in border-b-2 border-pink-300 rounded-lg p-4">
@@ -2243,61 +2296,6 @@
         </div>
     </section>
 
-<!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center fade-in">
-                <h2 class=" text-4xl md:text-5xl mb-4 text-black font-semibold" style="font-family: 'The Seasons', serif;">Contact</h2>
-                <p class="text-xl mb-8 text-stone-700" style="font-family: 'The Seasons', serif;">Get in touch for collaboration inquiries and business opportunities.</p>
-                
-                <!-- Contact Info -->
-                <div class="mb-8">
-                    <a href="mailto:lihueyyy@gmail.com" class="inline-flex items-center text-2xl text-stone-700 hover:text-pink-400 transition-colors duration-300 mb-4">
-                        <i class="fas fa-envelope mr-3"></i>
-                        lihueyyy@gmail.com
-                    </a>
-                </div>
-                
-                <div class="bg-stone-50 rounded-xl p-8 max-w-2xl mx-auto fade-in hover-scale border-b-2 border-pink-300 rounded-lg p-4">
-                    <h3 class="font-monest text-2xl mb-6 text-black" style="font-family: 'The Seasons', serif;">Collaboration Inquiry Form</h3>
-                    
-                    <form class="space-y-4" style="font-family: 'Josefin Sans', sans-serif;" action="mailto:lihueyyy@gmail.com" method="post" enctype="text/plain">
-                        <div class="grid sm:grid-cols-2 gap-4">
-                            <div>
-                                <label for="collab-name" class="block text-left mb-1">Name</label>
-                                <input type="text" id="collab-name" name="name" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
-                            </div>
-                            <div>
-                                <label for="collab-email" class="block text-left mb-1">Email</label>
-                                <input type="email" id="collab-email" name="email" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="collab-company" class="block text-left mb-1">Company/Brand</label>
-                            <input type="text" id="collab-company" name="company" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
-                        </div>
-                        <div>
-                            <label for="collab-type" class="block text-left mb-1">Collaboration Type</label>
-                            <select id="collab-type" name="collaboration-type" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300">
-                                <option value="">Select collaboration type</option>
-                                <option value="brand-partnership">Brand Partnership</option>
-                                <option value="sponsored-content">Sponsored Content</option>
-                                <option value="product-review">Product Review</option>
-                                <option value="event-coverage">Event Coverage</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="collab-message" class="block text-left mb-1">Message</label>
-                            <textarea id="collab-message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-stone-300 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-colors duration-300" placeholder="Please describe your collaboration proposal..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-hover bg-gradient-to-r from-pink-400 to-stone-600 text-white px-8 py-3 rounded-full font-medium hover:from-pink-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">Send Inquiry</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-black text-stone-100 py-12">
         <div class="container mx-auto px-6">
@@ -2309,7 +2307,7 @@
                 </div>
                 
                 <!-- Centered content layout -->
-                <div class="flex flex-col md:flex-row justify-center items-start md:items-center gap-8 md:gap-16">
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
                     <!-- Quick Links -->
                     <div class="text-center" style="font-family: 'Josefin Sans', sans-serif;">
                         <h4 class="font-semibold text-lg mb-4 text-white">Quick Links</h4>
@@ -2598,15 +2596,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar-thumbnails');
     let isScrolling = false;
     
-    sidebar.addEventListener('scroll', function() {
-        if (!isScrolling) {
-            window.requestAnimationFrame(function() {
-                // Add any scroll-based animations here if needed
-                isScrolling = false;
-            });
-            isScrolling = true;
-        }
-    });
+    if (sidebar) {
+        sidebar.addEventListener('scroll', function() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(function() {
+                    // Add any scroll-based animations here if needed
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        });
+    }
     
     // Add keyboard navigation support
     document.addEventListener('keydown', function(e) {
@@ -2717,7 +2717,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (slideshowContainers.length > 0 && backgroundImages.length > 0) {
         changeBackground();
         console.log('Starting slideshow with', backgroundImages.length, 'images');
-        setInterval(changeBackground, 4000);
+        setInterval(changeBackground, 2000);
     } else {
         console.log('No slideshow containers or images found!');
     }
@@ -2744,7 +2744,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start immediately with the first word and then change after 4 seconds
     if (mobileElement || desktopElement) {
         changeWord(); // Immediately change the word to start with
-        setInterval(changeWord, 4000); // Change word every 4 seconds
+        setInterval(changeWord, 2000); // Change word every 4 seconds
     }
     
     // Manual Slider Functionality
@@ -3133,6 +3133,297 @@ document.addEventListener('DOMContentLoaded', function() {
         viewLessBtn.addEventListener('click', showLessBrands);
     }
 });   
+    </script>
+
+    <!-- Admin Interface (Hidden by default) -->
+    <div id="adminInterface" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-black mb-2" style="font-family: 'The Seasons', serif;">Admin Panel</h2>
+                    <p class="text-stone-600" style="font-family: 'Josefin Sans', sans-serif;">Update Instagram Metrics</p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-700 mb-2">Instagram Followers</label>
+                        <input type="number" id="adminFollowers" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="14244">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-stone-700 mb-2">Engagement Rate (%)</label>
+                        <input type="number" id="adminEngagement" step="0.01" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="5.12">
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4">
+                        <button onclick="updateMetrics()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
+                            Update
+                        </button>
+                        <button onclick="closeAdmin()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Messages -->
+    <div id="customAlert" class="fixed top-4 right-4 z-50 hidden">
+        <div id="alertContent" class="bg-white rounded-lg shadow-2xl border-l-4 p-4 max-w-sm transform transition-all duration-300 ease-in-out">
+            <div class="flex items-start">
+                <div id="alertIcon" class="flex-shrink-0 mr-3 mt-0.5">
+                    <!-- Success Icon -->
+                    <svg id="successIcon" class="w-5 h-5 text-green-500 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <!-- Error Icon -->
+                    <svg id="errorIcon" class="w-5 h-5 text-red-500 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 id="alertTitle" class="text-sm font-semibold text-stone-900"></h4>
+                    <p id="alertMessage" class="text-sm text-stone-600 mt-1"></p>
+                </div>
+                <button onclick="hideCustomAlert()" class="flex-shrink-0 ml-3 text-stone-400 hover:text-stone-600 transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Access Button (Hidden, accessible via keyboard shortcut) -->
+    <div id="adminAccess" class="fixed bottom-4 right-4 opacity-0 pointer-events-none">
+        <button onclick="showAdminLogin()" class="bg-stone-800 text-white p-3 rounded-full shadow-lg hover:bg-stone-900 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Password Prompt -->
+    <div id="passwordPrompt" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-black mb-2" style="font-family: 'The Seasons', serif;">Admin Access</h3>
+                    <p class="text-stone-600 text-sm" style="font-family: 'Josefin Sans', sans-serif;">Enter password to continue</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <input type="password" id="adminPassword" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent" placeholder="Password">
+                    
+                    <div class="flex gap-3">
+                        <button onclick="checkPassword()" class="flex-1 bg-pink-400 text-white py-3 px-6 rounded-lg hover:bg-pink-500 transition-colors font-medium">
+                            Login
+                        </button>
+                        <button onclick="closePasswordPrompt()" class="flex-1 bg-stone-200 text-stone-700 py-3 px-6 rounded-lg hover:bg-stone-300 transition-colors font-medium">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Instagram Metrics Management
+    const ADMIN_PASSWORD = 'lihuey2024'; // Change this to a secure password
+    
+    // Load saved metrics from localStorage
+    function loadMetrics() {
+        const savedFollowers = localStorage.getItem('instagramFollowers');
+        const savedEngagement = localStorage.getItem('instagramEngagement');
+        
+        if (savedFollowers) {
+            updateFollowerDisplay(savedFollowers);
+        }
+        
+        if (savedEngagement) {
+            updateEngagementDisplay(savedEngagement);
+        }
+    }
+    
+    // Update follower count display
+    function updateFollowerDisplay(count) {
+        // Target the specific div for Instagram Followers
+        const followerElements = document.querySelectorAll('.counter');
+        followerElements.forEach(element => {
+            const nextElement = element.nextElementSibling;
+            if (nextElement && nextElement.textContent.includes('Instagram Followers')) {
+                element.setAttribute('data-target', count);
+                element.textContent = parseInt(count).toLocaleString(); // Add comma formatting
+                
+                // Trigger counter animation if visible
+                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
+                    animateCounter(element, parseInt(count), false);
+                }
+            }
+        });
+    }
+    
+    // Update engagement rate display
+    function updateEngagementDisplay(rate) {
+        // Target the specific div for Engagement Rate
+        const engagementElements = document.querySelectorAll('.counter[data-decimal="true"]');
+        engagementElements.forEach(element => {
+            const nextElement = element.nextElementSibling;
+            if (nextElement && nextElement.textContent.includes('Engagement Rate')) {
+                element.setAttribute('data-target', rate);
+                element.textContent = parseFloat(rate).toFixed(2) + '%';
+                
+                // Trigger counter animation if visible
+                if (element.getBoundingClientRect().top < window.innerHeight && typeof animateCounter === 'function') {
+                    animateCounter(element, parseFloat(rate), true);
+                }
+            }
+        });
+    }
+    
+    // Custom Alert Functions
+    function showCustomAlert(type, title, message) {
+        const alertElement = document.getElementById('customAlert');
+        const alertContent = document.getElementById('alertContent');
+        const alertTitle = document.getElementById('alertTitle');
+        const alertMessage = document.getElementById('alertMessage');
+        const successIcon = document.getElementById('successIcon');
+        const errorIcon = document.getElementById('errorIcon');
+        
+        // Reset icons
+        successIcon.classList.add('hidden');
+        errorIcon.classList.add('hidden');
+        
+        // Set content
+        alertTitle.textContent = title;
+        alertMessage.textContent = message;
+        
+        // Set type-specific styling
+        if (type === 'success') {
+            successIcon.classList.remove('hidden');
+            alertContent.classList.remove('border-red-500');
+            alertContent.classList.add('border-green-500');
+        } else if (type === 'error') {
+            errorIcon.classList.remove('hidden');
+            alertContent.classList.remove('border-green-500');
+            alertContent.classList.add('border-red-500');
+        }
+        
+        // Show alert with animation
+        alertElement.classList.remove('hidden');
+        setTimeout(() => {
+            alertElement.style.transform = 'translateX(0)';
+            alertElement.style.opacity = '1';
+        }, 10);
+        
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            hideCustomAlert();
+        }, 4000);
+    }
+    
+    function hideCustomAlert() {
+        const alertElement = document.getElementById('customAlert');
+        alertElement.style.transform = 'translateX(100%)';
+        alertElement.style.opacity = '0';
+        
+        setTimeout(() => {
+            alertElement.classList.add('hidden');
+        }, 300);
+    }
+
+    // Show admin login prompt
+    function showAdminLogin() {
+        document.getElementById('passwordPrompt').classList.remove('hidden');
+        document.getElementById('adminPassword').focus();
+    }
+    
+    // Close password prompt
+    function closePasswordPrompt() {
+        document.getElementById('passwordPrompt').classList.add('hidden');
+        document.getElementById('adminPassword').value = '';
+    }
+    
+    // Check password and show admin interface
+    function checkPassword() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            closePasswordPrompt();
+            showAdminInterface();
+        } else {
+            showCustomAlert('error', 'Access Denied', 'Incorrect password. Please try again.');
+            document.getElementById('adminPassword').value = '';
+        }
+    }
+    
+    // Show admin interface
+    function showAdminInterface() {
+        // Load current values
+        const currentFollowers = localStorage.getItem('instagramFollowers') || '14244';
+        const currentEngagement = localStorage.getItem('instagramEngagement') || '5.12';
+        
+        document.getElementById('adminFollowers').value = currentFollowers;
+        document.getElementById('adminEngagement').value = currentEngagement;
+        document.getElementById('adminInterface').classList.remove('hidden');
+    }
+    
+    // Close admin interface
+    function closeAdmin() {
+        document.getElementById('adminInterface').classList.add('hidden');
+    }
+    
+    // Update metrics
+    function updateMetrics() {
+        const followers = document.getElementById('adminFollowers').value;
+        const engagement = document.getElementById('adminEngagement').value;
+        
+        if (followers && engagement) {
+            // Validate input
+            if (isNaN(followers) || isNaN(engagement) || followers < 0 || engagement < 0) {
+                showCustomAlert('error', 'Invalid Input', 'Please enter valid positive numbers for both fields.');
+                return;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('instagramFollowers', followers);
+            localStorage.setItem('instagramEngagement', engagement);
+            
+            // Update display
+            updateFollowerDisplay(followers);
+            updateEngagementDisplay(engagement);
+            
+            // Close admin interface
+            closeAdmin();
+            
+            // Show success message
+            showCustomAlert('success', 'Success!', 'Instagram metrics have been updated successfully.');
+        } else {
+            showCustomAlert('error', 'Missing Information', 'Please fill in both Instagram followers and engagement rate fields.');
+        }
+    }
+    
+    // Keyboard shortcut to access admin (Ctrl+Shift+A)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+            e.preventDefault();
+            showAdminLogin();
+        }
+    });
+    
+    // Handle Enter key in password field
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.getElementById('passwordPrompt').classList.contains('hidden') === false) {
+            checkPassword();
+        }
+    });
+    
+    // Load metrics when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadMetrics();
+    });
     </script>
 </body>
 </html>
