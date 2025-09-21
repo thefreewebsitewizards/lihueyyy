@@ -3268,9 +3268,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 engagementElement.textContent = parseFloat(engagement).toFixed(2);
             }
             
-            // Save to localStorage
-            localStorage.setItem('instagramFollowers', followers);
-            localStorage.setItem('engagementRate', engagement);
+            // Save to server
+            saveStatsToServer(followers, engagement);
+        }
+
+        // Save statistics to server
+        async function saveStatsToServer(followers, engagement) {
+            try {
+                const data = {
+                    instagram_followers: parseInt(followers),
+                    engagement_rate: parseFloat(engagement)
+                };
+                
+                const response = await fetch('/api/stats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    console.log('Stats saved to server successfully');
+                } else {
+                    console.error('Failed to save stats to server');
+                }
+            } catch (error) {
+                console.error('Error saving stats to server:', error);
+            }
         }
 
         function showAdminMessage(message, type = 'success') {
@@ -3287,15 +3312,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function resetValues() {
-            // Reset to original values
-            document.getElementById('followerCount').value = '14244';
-            document.getElementById('engagementRate').value = '5.12';
-            
+            // Reset to original values and save to server
             updateInstagramMetrics('14244', '5.12');
-            
-            // Clear localStorage
-            localStorage.removeItem('instagramFollowers');
-            localStorage.removeItem('engagementRate');
             
             showAdminMessage('Values reset to original!');
         }
@@ -3321,14 +3339,26 @@ document.addEventListener('DOMContentLoaded', function() {
             showAdminMessage('Instagram metrics updated successfully!');
         });
 
+        // Load statistics from server
+        async function loadStatsFromServer() {
+            try {
+                const response = await fetch('/api/stats');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateInstagramMetrics(data.instagram_followers.toString(), data.engagement_rate.toString());
+                    console.log('Stats loaded from server:', data);
+                } else {
+                    console.log('Failed to load stats from server, using defaults');
+                }
+            } catch (error) {
+                console.log('Error loading stats from server:', error);
+            }
+        }
+
         // Load saved values on page load
          document.addEventListener('DOMContentLoaded', function() {
-             const savedFollowers = localStorage.getItem('instagramFollowers');
-             const savedEngagement = localStorage.getItem('engagementRate');
-             
-             if (savedFollowers && savedEngagement) {
-                 updateInstagramMetrics(savedFollowers, savedEngagement);
-             }
+             // First try to load from server
+             loadStatsFromServer();
          });
 
          // Secret keyboard shortcut to access admin panel (Ctrl+Shift+A)
