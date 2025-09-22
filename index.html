@@ -3171,44 +3171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     <script>
-        // Load statistics from data.json
-        async function loadStatsFromData() {
-            try {
-                const response = await fetch('./data.json');
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Loaded stats from data.json:', data);
-                    updateInstagramMetrics(data.instagram_followers.toString(), data.engagement_rate.toString());
-                } else {
-                    console.log('Failed to load data.json, using default values');
-                }
-            } catch (error) {
-                console.error('Error loading data.json:', error);
-            }
-        }
-
-        function updateInstagramMetrics(followers, engagement) {
-            // Update the counter elements
-            const followersElement = document.querySelector('.counter[data-target]');
-            const engagementElement = document.querySelector('.counter[data-decimal="true"]');
-            
-            if (followersElement) {
-                followersElement.setAttribute('data-target', followers);
-                followersElement.textContent = '0';
-                animateCounter(followersElement, parseInt(followers), false);
-            }
-            
-            if (engagementElement) {
-                engagementElement.setAttribute('data-target', engagement);
-                engagementElement.textContent = '0.00%';
-                animateCounter(engagementElement, parseFloat(engagement), true);
-            }
-        }
-
-        // Load saved values on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadStatsFromData();
-        });
+        // Static counters - no external data loading
     </script>
 </body>
 </html>
