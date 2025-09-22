@@ -833,14 +833,12 @@
                                         A passionate digital creator based in Adelaide, Australia, sharing style inspiration, beauty finds, and travel experiences. I collaborate with brands I truly believe in, creating authentic and engaging content that inspires and connects.
                                     </p>
                                     <div class="grid grid-cols-2 gap-4 mt-8">
-                                        <!-- Instagram Followers Counter - TEMPORARY VALUES -->
-                                        <!-- These data-target values are placeholders and will be dynamically replaced when admin updates the numbers -->
+                                        <!-- Instagram Followers Counter -->
                                         <div class="text-center p-4 bg-white border border-stone-200 rounded-lg">
-                                            <div class="text-2xl font-bold text-pink-400 mb-2 counter" data-target="14416">0</div>
+                                            <div class="text-2xl font-bold text-pink-400 mb-2 counter" data-target="14490">0</div>
                                             <div class="text-sm text-stone-700 font-medium">Instagram Followers</div>
                                         </div>
-                                        <!-- Engagement Rate Counter - TEMPORARY VALUES -->
-                                        <!-- These data-target values are placeholders and will be dynamically replaced when admin updates the numbers -->
+                                        <!-- Engagement Rate Counter -->
                                         <div class="text-center p-4 bg-white border border-stone-200 rounded-lg">
                                             <div class="text-2xl font-bold text-pink-400 mb-2 counter" data-target="5.12" data-decimal="true">0</div>
                                             <div class="text-sm text-stone-700 font-medium">Engagement Rate</div>
@@ -3170,225 +3168,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="fixed top-4 right-4 bg-white rounded-lg shadow-2xl border border-gray-200 p-6 w-80 z-50 hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">Admin Panel</h3>
-            <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-gray-700 transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                </svg>
-            </button>
-        </div>
-        
-        <form id="adminForm" class="space-y-4">
-            <div>
-                <label for="followerCount" class="block text-sm font-medium text-gray-700 mb-2">Instagram Followers</label>
-                <input type="number" id="followerCount" name="followerCount" 
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-            </div>
-            
-            <div>
-                <label for="engagementRate" class="block text-sm font-medium text-gray-700 mb-2">Engagement Rate (%)</label>
-                <input type="number" id="engagementRate" name="engagementRate" step="0.01" 
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-            </div>
-            
-            <div class="flex space-x-3 pt-2">
-                <button type="submit" class="flex-1 bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-colors font-medium">
-                    Update
-                </button>
-                <button type="button" onclick="resetValues()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors font-medium">
-                    Reset
-                </button>
-            </div>
-        </form>
-        
-        <div id="adminMessage" class="mt-4 p-3 rounded-md hidden">
-            <p class="text-sm"></p>
-        </div>
-    </div>
 
-    <!-- Admin Panel Toggle Button (Hidden from users) -->
-    <button id="adminToggle" onclick="toggleAdminPanel()" 
-            class="fixed bottom-4 right-4 bg-pink-500 text-white p-3 rounded-full shadow-lg hover:bg-pink-600 transition-colors z-40 hidden">
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
-        </svg>
-    </button>
 
     <script>
-        // Admin Panel Functionality
-        let isAdminPanelOpen = false;
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            isAdminPanelOpen = !isAdminPanelOpen;
-            
-            if (isAdminPanelOpen) {
-                panel.classList.remove('hidden');
-                loadCurrentValues(); // This is now async but we don't need to await it here
-            } else {
-                panel.classList.add('hidden');
-            }
-        }
-
-        async function loadCurrentValues() {
-            // Load saved values from server to ensure admin form shows actual saved data
+        // Load statistics from data.json
+        async function loadStatsFromData() {
             try {
-                const response = await fetch('/api/stats');
+                const response = await fetch('./data.json');
                 if (response.ok) {
                     const data = await response.json();
-                    document.getElementById('followerCount').value = data.instagram_followers;
-                    document.getElementById('engagementRate').value = data.engagement_rate;
+                    console.log('Loaded stats from data.json:', data);
+                    updateInstagramMetrics(data.instagram_followers.toString(), data.engagement_rate.toString());
                 } else {
-                    // Fallback to current displayed values if server request fails
-                    const followersElement = document.querySelector('.counter[data-target]');
-                    const engagementElement = document.querySelector('.counter[data-decimal="true"]');
-                    if (followersElement) {
-                        document.getElementById('followerCount').value = followersElement.textContent.replace(/,/g, '');
-                    }
-                    if (engagementElement) {
-                        document.getElementById('engagementRate').value = engagementElement.textContent;
-                    }
+                    console.log('Failed to load data.json, using default values');
                 }
             } catch (error) {
-                console.error('Error loading current values:', error);
-                // Fallback to current displayed values if there's an error
-                const followersElement = document.querySelector('.counter[data-target]');
-                const engagementElement = document.querySelector('.counter[data-decimal="true"]');
-                if (followersElement) {
-                    document.getElementById('followerCount').value = followersElement.textContent.replace(/,/g, '');
-                }
-                if (engagementElement) {
-                    document.getElementById('engagementRate').value = engagementElement.textContent;
-                }
+                console.error('Error loading data.json:', error);
             }
         }
 
         function updateInstagramMetrics(followers, engagement) {
-            // Update the counter elements - use dynamic selectors based on current values
+            // Update the counter elements
             const followersElement = document.querySelector('.counter[data-target]');
             const engagementElement = document.querySelector('.counter[data-decimal="true"]');
             
             if (followersElement) {
                 followersElement.setAttribute('data-target', followers);
-                // Reset text content to 0 before animation
                 followersElement.textContent = '0';
-                // Trigger animation
                 animateCounter(followersElement, parseInt(followers), false);
             }
             
             if (engagementElement) {
                 engagementElement.setAttribute('data-target', engagement);
-                // Reset text content to 0 before animation
                 engagementElement.textContent = '0.00%';
-                // Trigger animation
                 animateCounter(engagementElement, parseFloat(engagement), true);
-            }
-            
-            // Save to server
-            saveStatsToServer(followers, engagement);
-        }
-
-        // Save statistics to server
-        async function saveStatsToServer(followers, engagement) {
-            try {
-                const data = {
-                    instagram_followers: parseInt(followers),
-                    engagement_rate: parseFloat(engagement)
-                };
-                
-                const response = await fetch('/api/stats', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                if (response.ok) {
-                    console.log('Stats saved to server successfully');
-                } else {
-                    console.error('Failed to save stats to server');
-                }
-            } catch (error) {
-                console.error('Error saving stats to server:', error);
-            }
-        }
-
-        function showAdminMessage(message, type = 'success') {
-            const messageDiv = document.getElementById('adminMessage');
-            const messageText = messageDiv.querySelector('p');
-            
-            messageDiv.className = `mt-4 p-3 rounded-md ${type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
-            messageText.textContent = message;
-            messageDiv.classList.remove('hidden');
-            
-            setTimeout(() => {
-                messageDiv.classList.add('hidden');
-            }, 3000);
-        }
-
-        function resetValues() {
-            // Reset to original values and save to server
-            updateInstagramMetrics('14416', '5.12');
-            
-            showAdminMessage('Values reset to original!');
-        }
-
-        // Handle form submission
-        document.getElementById('adminForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const followers = document.getElementById('followerCount').value;
-            const engagement = document.getElementById('engagementRate').value;
-            
-            if (!followers || !engagement) {
-                showAdminMessage('Please fill in both fields!', 'error');
-                return;
-            }
-            
-            if (followers < 0 || engagement < 0) {
-                showAdminMessage('Values must be positive!', 'error');
-                return;
-            }
-            
-            updateInstagramMetrics(followers, engagement);
-            showAdminMessage('Instagram metrics updated successfully!');
-        });
-
-        // Load statistics from server
-        async function loadStatsFromServer() {
-            try {
-                const response = await fetch('/api/stats');
-                if (response.ok) {
-                    const data = await response.json();
-                    updateInstagramMetrics(data.instagram_followers.toString(), data.engagement_rate.toString());
-                    console.log('Stats loaded from server:', data);
-                } else {
-                    console.log('Failed to load stats from server, using defaults');
-                }
-            } catch (error) {
-                console.log('Error loading stats from server:', error);
             }
         }
 
         // Load saved values on page load
-         document.addEventListener('DOMContentLoaded', function() {
-             // First try to load from server
-             loadStatsFromServer();
-         });
-
-         // Secret keyboard shortcut to access admin panel (Ctrl+Shift+A)
-         document.addEventListener('keydown', function(e) {
-             if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                 e.preventDefault();
-                 const toggleButton = document.getElementById('adminToggle');
-                 toggleButton.classList.remove('hidden');
-                 toggleAdminPanel();
-             }
-         });
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatsFromData();
+        });
     </script>
 </body>
 </html>
